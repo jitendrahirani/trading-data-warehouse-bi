@@ -1,0 +1,64 @@
+table FeatureValueDaily
+	lineageTag: 311d5a6c-9585-5353-9156-099b0e53e2b4
+
+	column DateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 895bf48b-b880-5945-bdce-49df94a571e4
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column InstrumentKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a9704671-2067-5faa-bfcb-d1482a8f7e89
+		summarizeBy: none
+		sourceColumn: InstrumentKey
+
+	column FeatureKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 96f01872-29e5-56ed-8f7c-62f8fa547ddd
+		summarizeBy: none
+		sourceColumn: FeatureKey
+
+	column Minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: 503e0e3a-d433-5d8b-b5a6-035b203a2cbb
+		summarizeBy: sum
+		sourceColumn: Minutes
+
+	column Average
+		dataType: double
+		lineageTag: 8c02b446-bd28-5482-968c-6ede81f1c066
+		summarizeBy: sum
+		sourceColumn: Average
+
+	column Min
+		dataType: double
+		lineageTag: 578febf3-0338-5c24-9a22-0bc1667540fc
+		summarizeBy: sum
+		sourceColumn: Min
+
+	column Max
+		dataType: double
+		lineageTag: 63265bce-bebb-5f95-8534-50c2ea12c8ba
+		summarizeBy: sum
+		sourceColumn: Max
+
+	partition FeatureValueDaily = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="FeatureValueDaily"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"DateKey", Int64.Type}, {"InstrumentKey", Int64.Type}, {"FeatureKey", Int64.Type}, {"Minutes", Int64.Type}, {"Average", type number}, {"Min", type number}, {"Max", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

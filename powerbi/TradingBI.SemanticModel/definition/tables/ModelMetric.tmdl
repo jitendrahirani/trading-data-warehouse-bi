@@ -1,0 +1,51 @@
+table ModelMetric
+	lineageTag: 94e9f9b6-3a08-58e1-b0dc-168b0564a219
+
+	column ModelRunKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f5d85f0f-2169-5a4d-a655-7f604e4b3e1d
+		summarizeBy: none
+		sourceColumn: ModelRunKey
+
+	column Metric
+		dataType: string
+		lineageTag: 84173760-7820-57dd-a065-5f81a60f48ab
+		summarizeBy: none
+		sourceColumn: Metric
+
+	column ActualClassKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 332e6793-87a1-5359-b0fe-dbe6f3c3044e
+		summarizeBy: none
+		sourceColumn: ActualClassKey
+
+	column PredictedClassKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 77f358e4-47e1-57f7-bf4c-1a3c6e367c2b
+		summarizeBy: none
+		sourceColumn: PredictedClassKey
+
+	column Value
+		dataType: double
+		lineageTag: a217b554-2acc-5a2e-aea3-e9364e38884e
+		summarizeBy: sum
+		sourceColumn: Value
+
+	partition ModelMetric = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="ModelMetric"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"ModelRunKey", Int64.Type}, {"Metric", type text}, {"ActualClassKey", Int64.Type}, {"PredictedClassKey", Int64.Type}, {"Value", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

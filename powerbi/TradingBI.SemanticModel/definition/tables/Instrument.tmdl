@@ -1,0 +1,41 @@
+table Instrument
+	lineageTag: d07625c4-5f29-5582-9d98-a91343b7c05a
+
+	column InstrumentKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 5782508d-0c7d-5dfa-888a-acc2cee11a0a
+		summarizeBy: none
+		sourceColumn: InstrumentKey
+
+	column Instrument
+		dataType: string
+		lineageTag: 2ebfc7d0-efda-5ae0-80a9-5715e55acbd8
+		summarizeBy: none
+		sourceColumn: Instrument
+
+	column 'Instrument Name'
+		dataType: string
+		lineageTag: 4eb492fa-7d87-539d-9d65-797a8b11e172
+		summarizeBy: none
+		sourceColumn: Instrument Name
+
+	column Desk
+		dataType: string
+		lineageTag: 7525bd8b-0519-5a38-bd0e-ea28c631c22b
+		summarizeBy: none
+		sourceColumn: Desk
+
+	partition Instrument = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="Instrument"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"InstrumentKey", Int64.Type}, {"Instrument", type text}, {"Instrument Name", type text}, {"Desk", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

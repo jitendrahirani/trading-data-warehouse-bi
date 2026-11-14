@@ -1,0 +1,138 @@
+relationship 78abd3a1-424e-561e-9992-d5bc56650394
+	fromColumn: DQFinding.DateKey
+	toColumn: Date.DateKey
+
+relationship 430c9247-4f58-5cf0-b408-14998f317443
+	fromColumn: DQFinding.DatasetKey
+	toColumn: Dataset.DatasetKey
+
+relationship 234abeae-de83-525f-a419-3055a30b3045
+	fromColumn: DQFinding.CheckKey
+	toColumn: Check.CheckKey
+
+relationship 418f3e4d-2c06-56c8-b144-5faf7a239f30
+	fromColumn: DQFinding.SeverityKey
+	toColumn: Severity.SeverityKey
+
+relationship 2b92a527-a345-50fd-baf9-ced53e4f8687
+	fromColumn: DQFinding.GateClassKey
+	toColumn: GateClass.GateClassKey
+
+relationship b9a33030-2a86-5bb4-a633-061bdc0771f6
+	fromColumn: DQDailyStatus.DateKey
+	toColumn: Date.DateKey
+
+relationship 712d8715-26c4-5b0a-834a-1956eeab2059
+	fromColumn: DQDailyStatus.DatasetKey
+	toColumn: Dataset.DatasetKey
+
+relationship a2a72d7e-176e-5969-8cf8-7a31ed4662f5
+	fromColumn: DQDayVerdict.DateKey
+	toColumn: Date.DateKey
+
+relationship dec14903-4d9b-5820-950c-21a88e3b5227
+	fromColumn: ModelPrediction.ModelRunKey
+	toColumn: ModelRun.ModelRunKey
+
+relationship 906010aa-5073-5831-a096-17039dac8d44
+	fromColumn: ModelPrediction.InstrumentKey
+	toColumn: Instrument.InstrumentKey
+
+relationship a3166270-14fa-5f2e-a950-55681af37cb9
+	fromColumn: ModelPrediction.DateKey
+	toColumn: Date.DateKey
+
+relationship fba2fcee-524b-5edc-afba-cd84b5a59b62
+	fromColumn: ModelPrediction.TimeKey
+	toColumn: Time.TimeKey
+
+relationship 13be15cf-ef13-5787-aa5d-af3ba82d56d4
+	fromColumn: ModelPrediction.ActualClassKey
+	toColumn: ActualClass.ActualClassKey
+
+relationship 35922624-fff0-5503-b930-d3397b9b9c09
+	fromColumn: ModelPrediction.PredictedClassKey
+	toColumn: PredictedClass.PredictedClassKey
+
+relationship 5dff3a07-c547-5b05-8072-a49e212930d2
+	fromColumn: ModelMetric.ModelRunKey
+	toColumn: ModelRun.ModelRunKey
+
+relationship c44a8848-53e2-558e-8511-fc98bf220030
+	fromColumn: ModelMetric.ActualClassKey
+	toColumn: ActualClass.ActualClassKey
+
+relationship 65914f16-0470-5085-ae70-7cedcf5e4f41
+	fromColumn: ModelMetric.PredictedClassKey
+	toColumn: PredictedClass.PredictedClassKey
+
+relationship 9655d567-229e-53a9-b5a7-2694415e7175
+	fromColumn: FeatureImportance.ModelRunKey
+	toColumn: ModelRun.ModelRunKey
+
+relationship 183e93c7-e28a-5976-899a-fc9cbae2f13b
+	fromColumn: FeatureImportance.FeatureKey
+	toColumn: Feature.FeatureKey
+
+relationship 1da76ed0-db29-5254-86f8-c0bdcecb6b5a
+	fromColumn: Trade.ModelRunKey
+	toColumn: ModelRun.ModelRunKey
+
+relationship 6808acbd-1d79-59c6-8fbb-205a60560291
+	fromColumn: Trade.InstrumentKey
+	toColumn: Instrument.InstrumentKey
+
+relationship 2e507e91-93d4-5913-9972-61a0b6455ee1
+	fromColumn: Trade.ExitDateKey
+	toColumn: Date.DateKey
+
+relationship 50db067d-32e8-57d9-b399-b7fe552f1844
+	isActive: false
+	fromColumn: Trade.EntryDateKey
+	toColumn: Date.DateKey
+
+relationship bf433843-34b2-5034-af68-327601493006
+	fromColumn: Trade.ExitTimeKey
+	toColumn: Time.TimeKey
+
+relationship 9fe90785-74ac-548d-8730-f8f9ab1086ff
+	isActive: false
+	fromColumn: Trade.EntryTimeKey
+	toColumn: Time.TimeKey
+
+relationship 10a4cfb7-8759-5509-9932-c374957491c2
+	fromColumn: FeatureDrift.ReportDateKey
+	toColumn: Date.DateKey
+
+relationship 8a65b571-7c9b-50be-8f80-2384ee7fcddf
+	fromColumn: FeatureDrift.ModelRunKey
+	toColumn: ModelRun.ModelRunKey
+
+relationship d072dd8d-c324-5314-b7e9-1987da481fb5
+	fromColumn: FeatureDrift.FeatureKey
+	toColumn: Feature.FeatureKey
+
+relationship 772e34d9-7018-52bf-b805-dabad49844d3
+	fromColumn: FeatureValueDaily.DateKey
+	toColumn: Date.DateKey
+
+relationship 4fb7eea3-fedf-5b30-9a78-17df04a349ad
+	fromColumn: FeatureValueDaily.InstrumentKey
+	toColumn: Instrument.InstrumentKey
+
+relationship 9dbdcac6-90b4-501f-808d-2c950cf48262
+	fromColumn: FeatureValueDaily.FeatureKey
+	toColumn: Feature.FeatureKey
+
+relationship 2466146e-de68-5897-bb0b-61525df34afd
+	fromColumn: EtlRun.DateKey
+	toColumn: Date.DateKey
+
+relationship ff4414a5-2d5c-509a-9208-9354786bf5cb
+	fromColumn: EtlStep.EtlRunId
+	toColumn: EtlRun.EtlRunId
+
+relationship d75d0c40-184d-5adc-af71-8571df41bd5f
+	fromColumn: Reconciliation.EtlRunId
+	toColumn: EtlRun.EtlRunId
+

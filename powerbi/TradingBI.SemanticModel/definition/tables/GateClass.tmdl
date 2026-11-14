@@ -1,0 +1,65 @@
+table GateClass
+	lineageTag: d2ed1992-7e52-5387-bc1a-9c11bd0c5750
+
+	column GateClassKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: cfcefbc2-ebcf-5676-8369-95bfc475eaf0
+		summarizeBy: none
+		sourceColumn: GateClassKey
+
+	column 'Gate Class'
+		dataType: string
+		lineageTag: 105eb959-86ee-53ee-9470-0bb0f5e5bd55
+		summarizeBy: none
+		sourceColumn: Gate Class
+		sortByColumn: 'Gate Class Order'
+
+	column 'Is Fail'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 84f4f086-648c-5d3f-a51c-b457c7a97145
+		summarizeBy: none
+		sourceColumn: Is Fail
+
+	column 'Is Unresolved'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: bb844148-c441-5443-8836-69acc04d7335
+		summarizeBy: none
+		sourceColumn: Is Unresolved
+
+	column 'Excludes Day'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 4876cb91-e67f-510e-8d18-6dd3f82da43b
+		summarizeBy: none
+		sourceColumn: Excludes Day
+
+	column 'Masks Minutes'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 360165cd-9f3d-57ec-ba7f-06e3a242e4cd
+		summarizeBy: none
+		sourceColumn: Masks Minutes
+
+	column 'Gate Class Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: e195dd44-9801-5c00-93b4-60ecff21faf9
+		summarizeBy: none
+		sourceColumn: Gate Class Order
+
+	partition GateClass = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="GateClass"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"GateClassKey", Int64.Type}, {"Gate Class", type text}, {"Is Fail", type logical}, {"Is Unresolved", type logical}, {"Excludes Day", type logical}, {"Masks Minutes", type logical}, {"Gate Class Order", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

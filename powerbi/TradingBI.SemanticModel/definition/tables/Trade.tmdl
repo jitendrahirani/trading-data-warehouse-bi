@@ -1,0 +1,197 @@
+table Trade
+	lineageTag: 0edbc141-9404-5651-b99f-0ec1531607f4
+
+	column TradeId
+		dataType: int64
+		formatString: 0
+		lineageTag: 775eb362-1f17-59c2-8bdf-c51eecb47b71
+		summarizeBy: none
+		sourceColumn: TradeId
+
+	column ModelRunKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0ee32bbf-df46-5f29-ac77-d9d4f7339085
+		summarizeBy: none
+		sourceColumn: ModelRunKey
+
+	column InstrumentKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: adcc2e23-a487-5b13-bbb3-ba1339198187
+		summarizeBy: none
+		sourceColumn: InstrumentKey
+
+	column EntryDateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3f26fde1-b584-573e-b1d5-2eeee365a88a
+		summarizeBy: none
+		sourceColumn: EntryDateKey
+
+	column ExitDateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3a701f32-c117-5849-91e7-2b15e49e6ab3
+		summarizeBy: none
+		sourceColumn: ExitDateKey
+
+	column EntryTimeKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 93ee0420-57b1-5b39-ab0e-5aa6bb119133
+		summarizeBy: none
+		sourceColumn: EntryTimeKey
+
+	column ExitTimeKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 591ae41a-6bb5-5cac-b5eb-a1c1d306704e
+		summarizeBy: none
+		sourceColumn: ExitTimeKey
+
+	column 'Exit Time (UTC)'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a3cb969d-064b-5280-a3f3-ba8f8a46f703
+		summarizeBy: none
+		sourceColumn: Exit Time (UTC)
+
+	column Side
+		dataType: string
+		lineageTag: 306dd531-a1f5-5dc0-b65c-2ae8c9273334
+		summarizeBy: none
+		sourceColumn: Side
+
+	column Direction
+		dataType: string
+		lineageTag: 3ded19e4-4477-5dd1-a807-393c688ef000
+		summarizeBy: none
+		sourceColumn: Direction
+
+	column 'Hold (min)'
+		dataType: int64
+		formatString: 0
+		lineageTag: e506e666-a11f-5b45-92ec-cd4be8df39bb
+		summarizeBy: sum
+		sourceColumn: Hold (min)
+
+	column 'Exit Reason'
+		dataType: string
+		lineageTag: 06371913-ed2e-5733-a34f-03a6f29a3253
+		summarizeBy: none
+		sourceColumn: Exit Reason
+
+	column Contract
+		dataType: string
+		lineageTag: 04b17cc0-ac2c-5fee-8e2b-4eb931622077
+		summarizeBy: none
+		sourceColumn: Contract
+
+	column 'Option Type'
+		dataType: string
+		lineageTag: c229d9d5-c0e0-5da7-bb0f-e2877623ec97
+		summarizeBy: none
+		sourceColumn: Option Type
+
+	column Strike
+		dataType: double
+		lineageTag: 770bc9b7-b27a-574d-a59a-ce79f6290fa4
+		summarizeBy: sum
+		sourceColumn: Strike
+
+	column Expiry
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c75a7119-93fb-504d-98ef-a9e9dd024bfc
+		summarizeBy: none
+		sourceColumn: Expiry
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Qty
+		dataType: int64
+		formatString: 0
+		lineageTag: 35fab0d0-04ad-5d66-8035-25766300da02
+		summarizeBy: sum
+		sourceColumn: Qty
+
+	column 'Signal Prob'
+		dataType: double
+		lineageTag: 11aa9930-1ece-5559-936d-3a77eca25901
+		summarizeBy: sum
+		sourceColumn: Signal Prob
+
+	column 'Entry Price'
+		dataType: double
+		lineageTag: 9a0bdcd7-0c30-55ec-a8b5-3873ad63a074
+		summarizeBy: sum
+		sourceColumn: Entry Price
+
+	column 'Exit Price'
+		dataType: double
+		lineageTag: 20184312-0e0b-5865-b8e3-3c156dc98d70
+		summarizeBy: sum
+		sourceColumn: Exit Price
+
+	column 'Entry Cost (Rs)'
+		dataType: double
+		lineageTag: 907bdb63-977d-517f-8782-b03b2af247a0
+		summarizeBy: sum
+		sourceColumn: Entry Cost (Rs)
+
+	column 'Exit Cost (Rs)'
+		dataType: double
+		lineageTag: 94916954-29bb-541f-833a-4269e7233717
+		summarizeBy: sum
+		sourceColumn: Exit Cost (Rs)
+
+	column 'Total Cost (Rs)'
+		dataType: double
+		lineageTag: eb384887-50c3-59d2-83ae-ff0cc8ac91fb
+		summarizeBy: sum
+		sourceColumn: Total Cost (Rs)
+
+	column 'Gross P&L (Rs)'
+		dataType: double
+		lineageTag: b645746c-c4b2-561c-8bce-45fc17883a25
+		summarizeBy: sum
+		sourceColumn: Gross P&L (Rs)
+
+	column 'Net P&L (Rs)'
+		dataType: double
+		lineageTag: df2dafe5-d992-51bc-856c-0f6d81024483
+		summarizeBy: sum
+		sourceColumn: Net P&L (Rs)
+
+	column 'Is Win'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6612fe43-6b73-5618-ae50-6335929c8108
+		summarizeBy: none
+		sourceColumn: Is Win
+
+	column 'Futures Net (Rs)'
+		dataType: double
+		lineageTag: 91d4bdae-e4a4-5acb-956f-dcc5d8f8e016
+		summarizeBy: sum
+		sourceColumn: Futures Net (Rs)
+
+	partition Trade = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="Trade"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"TradeId", Int64.Type}, {"ModelRunKey", Int64.Type}, {"InstrumentKey", Int64.Type}, {"EntryDateKey", Int64.Type}, {"ExitDateKey", Int64.Type}, {"EntryTimeKey", Int64.Type}, {"ExitTimeKey", Int64.Type}, {"Exit Time (UTC)", type datetime}, {"Side", type text}, {"Direction", type text}, {"Hold (min)", Int64.Type}, {"Exit Reason", type text}, {"Contract", type text}, {"Option Type", type text}, {"Strike", type number}, {"Expiry", type date}, {"Qty", Int64.Type}, {"Signal Prob", type number}, {"Entry Price", type number}, {"Exit Price", type number}, {"Entry Cost (Rs)", type number}, {"Exit Cost (Rs)", type number}, {"Total Cost (Rs)", type number}, {"Gross P&L (Rs)", type number}, {"Net P&L (Rs)", type number}, {"Is Win", type logical}, {"Futures Net (Rs)", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

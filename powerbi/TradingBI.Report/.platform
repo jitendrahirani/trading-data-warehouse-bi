@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "TradingBI"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5718e16c-8d3c-4bfd-9939-01f972cf9aac"
+  }
+}

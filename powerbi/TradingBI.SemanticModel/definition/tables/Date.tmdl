@@ -1,0 +1,166 @@
+table Date
+	lineageTag: 89888282-9bec-5e08-bc97-10fec5f401cc
+	dataCategory: Time
+
+	column DateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 79b58b44-1ba7-5f1a-b8cf-cc78ca665601
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: Long Date
+		lineageTag: 6b413eab-1fa9-5e1b-ac3f-4dbdbfb7c82f
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 19cb30c7-9a9f-56a2-af74-ca103de67a3f
+		summarizeBy: none
+		sourceColumn: Year
+
+	column Quarter
+		dataType: string
+		lineageTag: 89f2a4b9-194b-5138-8330-4dd0504aeb0e
+		summarizeBy: none
+		sourceColumn: Quarter
+
+	column 'Month No'
+		dataType: int64
+		formatString: 0
+		lineageTag: b41ca979-be10-58d2-958c-6c2954253cbe
+		summarizeBy: none
+		sourceColumn: Month No
+
+	column Month
+		dataType: string
+		lineageTag: 3c5d0c2b-d15d-56d0-be4a-8d7435c1b340
+		summarizeBy: none
+		sourceColumn: Month
+		sortByColumn: 'Month No'
+
+	column Year-Month
+		dataType: string
+		lineageTag: 91b5088c-420d-5507-b0f9-9bcea47f113b
+		summarizeBy: none
+		sourceColumn: Year-Month
+
+	column 'Day of Month'
+		dataType: int64
+		formatString: 0
+		lineageTag: c91f9cb3-e82d-5e16-b28b-64996485abe0
+		summarizeBy: none
+		sourceColumn: Day of Month
+
+	column 'Weekday No'
+		dataType: int64
+		formatString: 0
+		lineageTag: 35e26831-bb8f-5adc-a1ff-1fc9e55d8de4
+		summarizeBy: none
+		sourceColumn: Weekday No
+
+	column Weekday
+		dataType: string
+		lineageTag: 750fff86-01f5-525d-937d-05dc4b4d22e6
+		summarizeBy: none
+		sourceColumn: Weekday
+		sortByColumn: 'Weekday No'
+
+	column 'ISO Week'
+		dataType: int64
+		formatString: 0
+		lineageTag: e497c4eb-5f77-5e7d-b12a-9ab8bf84a408
+		summarizeBy: none
+		sourceColumn: ISO Week
+
+	column 'Week Start'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f03eece1-2236-54af-afc0-3d8baaf323cc
+		summarizeBy: none
+		sourceColumn: Week Start
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Is Weekend'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ffd8cb71-b4d2-5e32-a318-7ccd93260c18
+		summarizeBy: none
+		sourceColumn: Is Weekend
+
+	column 'Is Holiday'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 434a5d1f-ac75-58e4-8a08-714a885419fc
+		summarizeBy: none
+		sourceColumn: Is Holiday
+
+	column Holiday
+		dataType: string
+		lineageTag: e9c42be7-b885-5337-b110-2c2f6b1456bd
+		summarizeBy: none
+		sourceColumn: Holiday
+
+	column 'Is Trading Day'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d7783ddd-ef15-5f69-90c6-3148ccfdf6f6
+		summarizeBy: none
+		sourceColumn: Is Trading Day
+
+	column 'Trading Day No'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3cef3eb2-43ce-5875-9967-3b0642a49dd9
+		summarizeBy: none
+		sourceColumn: Trading Day No
+
+	column 'Session End'
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: c9e125ea-63b8-55fc-b7ac-852c91967d96
+		summarizeBy: none
+		sourceColumn: Session End
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column 'Fiscal Year'
+		dataType: string
+		lineageTag: 8335ee8f-9527-556a-a04a-6c0982a66d49
+		summarizeBy: none
+		sourceColumn: Fiscal Year
+
+	column 'Fiscal Quarter'
+		dataType: string
+		lineageTag: 96a8d2ce-89b0-5640-9de2-57f6cdea5a59
+		summarizeBy: none
+		sourceColumn: Fiscal Quarter
+
+	column 'Fiscal Month No'
+		dataType: int64
+		formatString: 0
+		lineageTag: d0f70299-91ea-5441-b87a-cf79264b1ff7
+		summarizeBy: none
+		sourceColumn: Fiscal Month No
+
+	partition Date = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="Date"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"DateKey", Int64.Type}, {"Date", type date}, {"Year", Int64.Type}, {"Quarter", type text}, {"Month No", Int64.Type}, {"Month", type text}, {"Year-Month", type text}, {"Day of Month", Int64.Type}, {"Weekday No", Int64.Type}, {"Weekday", type text}, {"ISO Week", Int64.Type}, {"Week Start", type date}, {"Is Weekend", type logical}, {"Is Holiday", type logical}, {"Holiday", type text}, {"Is Trading Day", type logical}, {"Trading Day No", Int64.Type}, {"Session End", type time}, {"Fiscal Year", type text}, {"Fiscal Quarter", type text}, {"Fiscal Month No", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

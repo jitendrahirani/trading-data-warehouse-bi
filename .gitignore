@@ -1,0 +1,15 @@
+# Local settings and data (never published)
+config.ini
+source_snapshot/
+
+# Office lock files
+~$*
+
+# Power BI Project files that must stay local
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+
+# SQL Server backups, Python caches
+*.bak
+__pycache__/
+.pytest_cache/

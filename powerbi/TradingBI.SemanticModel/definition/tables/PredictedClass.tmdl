@@ -1,0 +1,44 @@
+table PredictedClass
+	lineageTag: ff4091c5-2372-5a86-8f03-99bf04d82396
+
+	column PredictedClassKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c03eb44f-c435-50d1-bf06-f7e67740bba2
+		summarizeBy: none
+		sourceColumn: PredictedClassKey
+
+	column 'Predicted Class'
+		dataType: string
+		lineageTag: 34d2f33d-3cab-58f8-a4ff-7f1da27500a9
+		summarizeBy: none
+		sourceColumn: Predicted Class
+		sortByColumn: 'Predicted Class Order'
+
+	column 'Predicted Class Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: 74dc4d9f-9327-5910-b7e8-57d2db4b68d7
+		summarizeBy: none
+		sourceColumn: Predicted Class Order
+
+	column 'Predicted Is Directional'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f77b44e9-73f0-56cd-ab40-22f11c95e26a
+		summarizeBy: none
+		sourceColumn: Predicted Is Directional
+
+	partition PredictedClass = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="PredictedClass"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"PredictedClassKey", Int64.Type}, {"Predicted Class", type text}, {"Predicted Class Order", Int64.Type}, {"Predicted Is Directional", type logical}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

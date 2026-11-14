@@ -1,0 +1,102 @@
+table ModelRun
+	lineageTag: 6ebb0aa3-800b-5ff8-a29c-0ab0ac006305
+
+	column ModelRunKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4295274d-5282-5245-89fd-107fb5b2d8d5
+		summarizeBy: none
+		sourceColumn: ModelRunKey
+
+	column 'Model Run'
+		dataType: string
+		lineageTag: 63312d9a-8e7c-562f-b788-b30edc0b4577
+		summarizeBy: none
+		sourceColumn: Model Run
+
+	column 'Run Set'
+		dataType: string
+		lineageTag: 6e0f1b23-a8e5-5ce2-a275-bcf6c4f3c912
+		summarizeBy: none
+		sourceColumn: Run Set
+
+	column 'Label Mode'
+		dataType: string
+		lineageTag: e2617311-8674-54d6-b070-37f1de610e88
+		summarizeBy: none
+		sourceColumn: Label Mode
+
+	column 'Horizon (min)'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0dad8b42-493e-5435-82a7-40b2a9903298
+		summarizeBy: none
+		sourceColumn: Horizon (min)
+
+	column Scenario
+		dataType: string
+		lineageTag: fc4223d8-3c87-5df9-bb57-04674d203b0c
+		summarizeBy: none
+		sourceColumn: Scenario
+
+	column Model
+		dataType: string
+		lineageTag: 8336275d-4270-5e6e-bf3d-b6f9eebd8b7d
+		summarizeBy: none
+		sourceColumn: Model
+
+	column 'Trained At'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d9b64dd1-fcde-5d85-ad1e-53ffb64a7c54
+		summarizeBy: none
+		sourceColumn: Trained At
+
+	column 'Training Rows'
+		dataType: int64
+		formatString: 0
+		lineageTag: aba05288-7fac-53ba-a2cd-ac5a87f17d2f
+		summarizeBy: none
+		sourceColumn: Training Rows
+
+	column Features
+		dataType: int64
+		formatString: 0
+		lineageTag: a386bc11-aea1-5e52-8f7a-dbdf0bc3df81
+		summarizeBy: none
+		sourceColumn: Features
+
+	column 'Is Production'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5d37b091-fee6-5e78-85bc-433041a7b56f
+		summarizeBy: none
+		sourceColumn: Is Production
+
+	column 'Is Headline Run'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3324c9b8-30eb-5694-9638-ba0193ca51a0
+		summarizeBy: none
+		sourceColumn: Is Headline Run
+
+	column 'Has OOF Predictions'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 7c29767f-2deb-5353-8aad-744388a99f56
+		summarizeBy: none
+		sourceColumn: Has OOF Predictions
+
+	partition ModelRun = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="ModelRun"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"ModelRunKey", Int64.Type}, {"Model Run", type text}, {"Run Set", type text}, {"Label Mode", type text}, {"Horizon (min)", Int64.Type}, {"Scenario", type text}, {"Model", type text}, {"Trained At", type datetime}, {"Training Rows", Int64.Type}, {"Features", Int64.Type}, {"Is Production", type logical}, {"Is Headline Run", type logical}, {"Has OOF Predictions", type logical}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,95 @@
+table Dataset
+	lineageTag: c4372149-6b5a-536b-91b1-325ca72b2968
+
+	column DatasetKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d70b3a93-9ff8-525e-bcae-ccc6fd42235f
+		summarizeBy: none
+		sourceColumn: DatasetKey
+
+	column Dataset
+		dataType: string
+		lineageTag: 57d68b4f-f162-5819-8811-c5869b18f4fa
+		summarizeBy: none
+		sourceColumn: Dataset
+
+	column 'Dataset Group'
+		dataType: string
+		lineageTag: 9565f935-430b-54e6-bcb1-0101096e6c6f
+		summarizeBy: none
+		sourceColumn: Dataset Group
+
+	column Publication
+		dataType: string
+		lineageTag: f6ff157b-2720-59a9-8f8d-68debd2ba4e6
+		summarizeBy: none
+		sourceColumn: Publication
+
+	column Cadence
+		dataType: string
+		lineageTag: 6ca2422c-927e-56e6-9d04-5d85d35860f5
+		summarizeBy: none
+		sourceColumn: Cadence
+
+	column 'Is Intraday'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 03dd1f7c-38bc-5653-b15d-5e67e105223c
+		summarizeBy: none
+		sourceColumn: Is Intraday
+
+	column 'Consumed by Model'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 69df34a3-c029-5176-9214-4fae55be28eb
+		summarizeBy: none
+		sourceColumn: Consumed by Model
+
+	column 'Session End'
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: be1537c9-4c12-545e-a66d-7b7d2a6227a1
+		summarizeBy: none
+		sourceColumn: Session End
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column 'Valid From'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 89ef26ac-4dca-5b94-bffe-6cb9abe1cf2c
+		summarizeBy: none
+		sourceColumn: Valid From
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Valid To'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: bbd60752-59b5-5c01-b4b5-0f2ba23a6df3
+		summarizeBy: none
+		sourceColumn: Valid To
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Is Current Version'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f1e6fe46-2178-5553-984b-1cd214b30a35
+		summarizeBy: none
+		sourceColumn: Is Current Version
+
+	partition Dataset = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="Dataset"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"DatasetKey", Int64.Type}, {"Dataset", type text}, {"Dataset Group", type text}, {"Publication", type text}, {"Cadence", type text}, {"Is Intraday", type logical}, {"Consumed by Model", type logical}, {"Session End", type time}, {"Valid From", type date}, {"Valid To", type date}, {"Is Current Version", type logical}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

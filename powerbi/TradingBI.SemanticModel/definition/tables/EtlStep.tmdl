@@ -1,0 +1,96 @@
+table EtlStep
+	lineageTag: 5c7fbbc4-2533-5414-b087-bb67ec418f3f
+
+	column StepLogId
+		dataType: int64
+		formatString: 0
+		lineageTag: 9df59ce6-c17b-5122-85ae-2c752db528c5
+		summarizeBy: none
+		sourceColumn: StepLogId
+
+	column EtlRunId
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ef6b76dc-657f-578b-af7f-a2ba44b88f59
+		summarizeBy: none
+		sourceColumn: EtlRunId
+
+	column Step
+		dataType: string
+		lineageTag: 1c904097-c66c-588f-ba1e-185a74768a70
+		summarizeBy: none
+		sourceColumn: Step
+
+	column 'Target Table'
+		dataType: string
+		lineageTag: 87a39b7f-90c8-5f52-89dc-984fd7383d77
+		summarizeBy: none
+		sourceColumn: Target Table
+
+	column Status
+		dataType: string
+		lineageTag: 93be25b9-c774-55bc-b11d-841989bb5c02
+		summarizeBy: none
+		sourceColumn: Status
+
+	column 'Rows Read'
+		dataType: int64
+		formatString: 0
+		lineageTag: ce5e9d15-e702-5799-be5b-85e2f5fa0acb
+		summarizeBy: sum
+		sourceColumn: Rows Read
+
+	column 'Rows Inserted'
+		dataType: int64
+		formatString: 0
+		lineageTag: b83d8bbb-ed05-5f26-acf5-379faa7f6042
+		summarizeBy: sum
+		sourceColumn: Rows Inserted
+
+	column 'Rows Updated'
+		dataType: int64
+		formatString: 0
+		lineageTag: abcd00b5-6f6d-51e9-b696-1eb34b647c5f
+		summarizeBy: sum
+		sourceColumn: Rows Updated
+
+	column 'Rows Deleted'
+		dataType: int64
+		formatString: 0
+		lineageTag: 332a40be-8096-513d-aec5-195c49041207
+		summarizeBy: sum
+		sourceColumn: Rows Deleted
+
+	column 'Rows Rejected'
+		dataType: int64
+		formatString: 0
+		lineageTag: 9cf57494-6d19-5d85-82d0-124638dfa183
+		summarizeBy: sum
+		sourceColumn: Rows Rejected
+
+	column 'Duration (ms)'
+		dataType: int64
+		formatString: 0
+		lineageTag: b5f73b6d-ea9a-5ffd-bff9-cfdaa5ee9b33
+		summarizeBy: sum
+		sourceColumn: Duration (ms)
+
+	column Error
+		dataType: string
+		lineageTag: be2d3f3d-4469-56b8-8b48-fc06e2064407
+		summarizeBy: none
+		sourceColumn: Error
+
+	partition EtlStep = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="EtlStep"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"StepLogId", Int64.Type}, {"EtlRunId", Int64.Type}, {"Step", type text}, {"Target Table", type text}, {"Status", type text}, {"Rows Read", Int64.Type}, {"Rows Inserted", Int64.Type}, {"Rows Updated", Int64.Type}, {"Rows Deleted", Int64.Type}, {"Rows Rejected", Int64.Type}, {"Duration (ms)", Int64.Type}, {"Error", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

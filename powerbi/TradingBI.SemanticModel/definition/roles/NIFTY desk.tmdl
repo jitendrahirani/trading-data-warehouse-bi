@@ -1,0 +1,7 @@
+role 'NIFTY desk'
+	modelPermission: read
+
+	tablePermission Instrument = [Instrument] = "NIFTY"
+
+	annotation PBI_Id = 2e70fc9d97114a9b9c757ef19207c57b
+

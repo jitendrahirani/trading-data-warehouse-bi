@@ -1,0 +1,869 @@
+{
+ "p1": {
+  "Day Verdict": "ok",
+  "DQ Pass Rate": 1.0,
+  "Unresolved FAILs": 0,
+  "Days Since Unresolved FAIL": 5,
+  "Checks Evaluated": 238,
+  "FAILs": 0,
+  "Warn + Fail Findings": 0,
+  "Rolling 20-Day Fail Rate": 0.000589970501,
+  "Last Successful Load": "2026-11-11 18:22:44.835000",
+  "Excluded Days (all)": 9
+ },
+ "p1_ds": [],
+ "p1_line": [
+  [
+   "2026-05-29",
+   0.696
+  ],
+  [
+   "2026-08-26",
+   0.8866995073891626
+  ],
+  [
+   "2026-05-04",
+   0.9261363636363636
+  ]
+ ],
+ "p1_verdicts": [
+  [
+   "exclude",
+   9
+  ],
+  [
+   "ok",
+   131
+  ],
+  [
+   "unchecked",
+   1
+  ]
+ ],
+ "p2": {
+  "Checks Evaluated": 27511,
+  "DQ Pass Rate": 0.964595979789,
+  "FAILs": 79,
+  "Unresolved FAILs": 29,
+  "Warn + Fail Findings": 974,
+  "Known-Cause FAILs and WARNs": 859,
+  "Cross-Source FAILs": 0,
+  "Worst Dataset": "collector_a_crossasset_5m",
+  "Excluded Days": 9
+ },
+ "p2_gate": [
+  [
+   "not consumed by the model",
+   15
+  ],
+  [
+   "by design now",
+   10
+  ],
+  [
+   "excluded by decision",
+   25
+  ],
+  [
+   "unresolved: minutes masked",
+   11
+  ],
+  [
+   "unresolved: day excluded",
+   18
+  ]
+ ],
+ "p2_topds": [
+  [
+   "collector_a_crossasset_5m",
+   620
+  ],
+  [
+   "collector_a_index_sector_bars_1m",
+   117
+  ],
+  [
+   "collector_a_daily_macro_calendar",
+   116
+  ],
+  [
+   "collector_a_minute_constituent_quotes",
+   35
+  ],
+  [
+   "collector_a_limited_websocket_ticks",
+   26
+  ]
+ ],
+ "p2_xchk": [
+  [
+   "bars_vs_quotes_volume",
+   "Warning",
+   4
+  ]
+ ],
+ "p2_cat": [
+  [
+   "Validity",
+   634
+  ],
+  [
+   "Completeness",
+   185
+  ],
+  [
+   "Timeliness",
+   120
+  ],
+  [
+   "Consistency",
+   31
+  ],
+  [
+   "Reconciliation",
+   4
+  ]
+ ],
+ "p2_groups": [
+  [
+   "Commodities (MCX)",
+   2
+  ],
+  [
+   "Cross-source reconciliation (X1-X8)",
+   1
+  ],
+  [
+   "Daily positioning (NSE reports)",
+   3
+  ],
+  [
+   "Daily reference",
+   7
+  ],
+  [
+   "Global markets (Yahoo)",
+   5
+  ],
+  [
+   "Index futures, spot & VIX - minute snapshot",
+   2
+  ],
+  [
+   "News & corporate",
+   4
+  ],
+  [
+   "Options - minute",
+   4
+  ],
+  [
+   "Options - minute chain",
+   2
+  ],
+  [
+   "Order book - 5-second snapshots",
+   4
+  ],
+  [
+   "Stocks & sectors - minute",
+   6
+  ],
+  [
+   "Unknown",
+   1
+  ],
+  [
+   "Websocket ticks",
+   4
+  ],
+  [
+   "Websocket ticks (manifest)",
+   2
+  ]
+ ],
+ "p2_sev": [
+  [
+   "Unknown",
+   -1,
+   false,
+   "#9E9E9E"
+  ],
+  [
+   "Pass",
+   0,
+   false,
+   "#2E7D32"
+  ],
+  [
+   "Note",
+   1,
+   false,
+   "#1565C0"
+  ],
+  [
+   "Warning",
+   2,
+   true,
+   "#EF6C00"
+  ],
+  [
+   "Fail",
+   3,
+   true,
+   "#C62828"
+  ]
+ ],
+ "p2_drill": [
+  [
+   "collector_a_crossasset_5m",
+   5
+  ],
+  [
+   "collector_a_limited_websocket_ticks",
+   2
+  ],
+  [
+   "collector_a_daily_macro_calendar",
+   1
+  ],
+  [
+   "collector_a_index_sector_bars_1m",
+   1
+  ]
+ ],
+ "p2_verdict_0714": [
+  [
+   "exclude",
+   1
+  ]
+ ],
+ "p3": {
+  "ETL Runs": 10,
+  "Failed ETL Runs": 5,
+  "Last Successful Load": "2026-11-11 18:22:44.835000",
+  "Avg Run Duration (s)": 164.2,
+  "ETL Reconciliation Breaks": 0,
+  "Rows Rejected": 0
+ },
+ "p3_recon": [
+  [
+   "dw",
+   "PASS",
+   75
+  ],
+  [
+   "source-stg",
+   "PASS",
+   144
+  ],
+  [
+   "stg-dw",
+   "PASS",
+   19
+  ],
+  [
+   "target",
+   "PASS",
+   275
+  ]
+ ],
+ "p3_steps": [
+  [
+   1,
+   36,
+   815804
+  ],
+  [
+   2,
+   36,
+   9559930
+  ],
+  [
+   7,
+   1,
+   null
+  ],
+  [
+   8,
+   35,
+   937
+  ],
+  [
+   9,
+   35,
+   628
+  ],
+  [
+   10,
+   35,
+   979
+  ],
+  [
+   11,
+   35,
+   402
+  ],
+  [
+   16,
+   1,
+   null
+  ],
+  [
+   21,
+   1,
+   null
+  ],
+  [
+   1015,
+   1,
+   null
+  ]
+ ],
+ "p4": {
+  "Predictions": 67583,
+  "Accuracy": 0.462276016157,
+  "Balanced Accuracy": 0.365112908536,
+  "Macro F1": 0.349737,
+  "Directional Precision": 0.322723101628,
+  "Committed %": 0.257993874199,
+  "Frozen Report Accuracy": 0.462,
+  "Drifted Features": 13
+ },
+ "p4_runs": [
+  [
+   "v0_2026-10:vol:h5m",
+   5,
+   false,
+   true
+  ],
+  [
+   "v0_2026-10:vol:h10m",
+   10,
+   true,
+   true
+  ],
+  [
+   "v0_2026-10:vol:h15m",
+   15,
+   false,
+   true
+  ],
+  [
+   "v0_2026-10:vol:h20m",
+   20,
+   false,
+   true
+  ],
+  [
+   "v0_2026-10:vol:h30m",
+   30,
+   false,
+   true
+  ]
+ ],
+ "p4_cm": [
+  [
+   "Down",
+   "Down",
+   2908
+  ],
+  [
+   "Down",
+   "Flat",
+   12569
+  ],
+  [
+   "Down",
+   "Up",
+   1938
+  ],
+  [
+   "Flat",
+   "Down",
+   4128
+  ],
+  [
+   "Flat",
+   "Flat",
+   25615
+  ],
+  [
+   "Flat",
+   "Up",
+   3711
+  ],
+  [
+   "Up",
+   "Down",
+   2032
+  ],
+  [
+   "Up",
+   "Flat",
+   11963
+  ],
+  [
+   "Up",
+   "Up",
+   2719
+  ]
+ ],
+ "p4_thr": [
+  [
+   0.4,
+   0.325695,
+   0.226018
+  ],
+  [
+   0.45,
+   0.329062,
+   0.161697
+  ],
+  [
+   0.5,
+   0.337973,
+   0.09566
+  ],
+  [
+   0.55,
+   0.347644,
+   0.053075
+  ],
+  [
+   0.6,
+   0.362272,
+   0.02761
+  ]
+ ],
+ "p4_imp": [
+  [
+   "vix_minus_rv",
+   1,
+   0.0086
+  ],
+  [
+   "gift_basis_z_30m",
+   2,
+   0.0071
+  ],
+  [
+   "vix_vs_prev_close",
+   3,
+   0.0037
+  ],
+  [
+   "ca_us_vix_chg",
+   4,
+   0.0029
+  ],
+  [
+   "minute_of_day",
+   5,
+   0.0027
+  ]
+ ],
+ "p4_impn": [
+  [
+   15
+  ]
+ ],
+ "p4_drift": [
+  [
+   "ca_crude_chg",
+   7.485
+  ],
+  [
+   "ca_usdinr_x_chg",
+   6.711
+  ],
+  [
+   "gap_open_bps",
+   6.548
+  ],
+  [
+   "iv_curv",
+   6.503
+  ],
+  [
+   "ca_hsi_chg",
+   5.37
+  ],
+  [
+   "atm_iv",
+   5.284
+  ],
+  [
+   "fut_spot_basis_bps",
+   5.07
+  ],
+  [
+   "net_vanna_oi",
+   4.831
+  ],
+  [
+   "days_to_expiry",
+   3.812
+  ],
+  [
+   "iv_term_slope",
+   3.563
+  ],
+  [
+   "iv_skew",
+   3.13
+  ],
+  [
+   "ca_ndx_fut_chg",
+   3.023
+  ],
+  [
+   "ca_spx_fut_chg",
+   2.266
+  ],
+  [
+   "ret_from_prev_close_bps",
+   1.98
+  ],
+  [
+   "vix_vs_prev_close",
+   1.605
+  ],
+  [
+   "book_press",
+   1.153
+  ],
+  [
+   "gex_oi",
+   1.088
+  ],
+  [
+   "net_charm_oi",
+   0.651
+  ],
+  [
+   "day_range_bps",
+   0.575
+  ],
+  [
+   "rv_parkinson_15m",
+   0.501
+  ],
+  [
+   "rv_garman_klass_15m",
+   0.475
+  ],
+  [
+   "vix_minus_rv",
+   0.407
+  ],
+  [
+   "rv_sqrt_15m",
+   0.373
+  ],
+  [
+   "realized_var_15m",
+   0.373
+  ],
+  [
+   "rv_ann_pct_15m",
+   0.371
+  ],
+  [
+   "rv_parkinson_5m",
+   0.368
+  ],
+  [
+   "rv_rogers_satchell_15m",
+   0.365
+  ],
+  [
+   "opt_spread_bps",
+   0.329
+  ],
+  [
+   "rv_garman_klass_5m",
+   0.324
+  ],
+  [
+   "opt_flow_imb",
+   0.297
+  ],
+  [
+   "opt_flow_imb_ewma_5m",
+   0.282
+  ],
+  [
+   "rv_rogers_satchell_5m",
+   0.262
+  ],
+  [
+   "tick_n_1m",
+   0.256
+  ]
+ ],
+ "p4_driftruns": [
+  [
+   "v0_2026-10:vol:h10m",
+   "low-n",
+   20260912
+  ],
+  [
+   "v0_2026-10:vol:h10m",
+   "low-n",
+   20260918
+  ],
+  [
+   "v0_2026-10:vol:h10m",
+   "low-n",
+   20260925
+  ],
+  [
+   "v0_2026-10:vol:h10m",
+   "low-n",
+   20261009
+  ],
+  [
+   "v0_2026-10:vol:h10m",
+   "psi-reliable",
+   20260912
+  ],
+  [
+   "v0_2026-10:vol:h10m",
+   "psi-reliable",
+   20260918
+  ],
+  [
+   "v0_2026-10:vol:h10m",
+   "psi-reliable",
+   20260925
+  ],
+  [
+   "v0_2026-10:vol:h10m",
+   "psi-reliable",
+   20261009
+  ],
+  [
+   "v0_2026-10:vol:h10m",
+   "range-skew",
+   20260912
+  ]
+ ],
+ "p5": {
+  "Trades": 8133,
+  "Net P&L": -1126793.3,
+  "Gross P&L": -379693.95,
+  "Costs": 747099.35,
+  "Cost % of Gross": 1.967635,
+  "Win Rate": 0.37304807574,
+  "Avg Net per Trade": -138.545837
+ },
+ "p5_inst": [
+  [
+   "NIFTY",
+   3978,
+   -323876.28
+  ],
+  [
+   "BANKNIFTY",
+   4155,
+   -802917.02
+  ]
+ ],
+ "p5_runs": [
+  [
+   "r2026-09-17:opt_pnl:h30m",
+   false,
+   364,
+   56600.35,
+   33168.27,
+   23432.08
+  ],
+  [
+   "r2026-09-17:opt_pnl:h5m",
+   false,
+   123,
+   6487.34,
+   10668.13,
+   -4180.79
+  ],
+  [
+   "v0_2026-10:vol:h10m",
+   true,
+   112,
+   -1801.35,
+   9528.63,
+   -11329.98
+  ],
+  [
+   "v0_2026-10:vol:h5m",
+   false,
+   133,
+   -6605.32,
+   11544.8,
+   -18150.12
+  ],
+  [
+   "r2026-09-17:opt_pnl:h10m",
+   false,
+   248,
+   3546.01,
+   24575.75,
+   -21029.74
+  ],
+  [
+   "r2026-09-17:vol:h5m",
+   false,
+   131,
+   -10569.29,
+   12224.93,
+   -22794.22
+  ],
+  [
+   "r2026-09-17:fut_cost:h10m",
+   false,
+   119,
+   -13191.86,
+   13342.08,
+   -26533.94
+  ],
+  [
+   "r2026-09-17:fut_cost:h5m",
+   false,
+   145,
+   -16321.25,
+   16311.15,
+   -32632.4
+  ],
+  [
+   "r2026-09-17:opt_pnl:h15m",
+   false,
+   139,
+   -22246.79,
+   14073.57,
+   -36320.36
+  ],
+  [
+   "r2026-09-17:opt_pnl:h20m",
+   false,
+   346,
+   -5135.74,
+   33645.97,
+   -38781.71
+  ],
+  [
+   "r2026-09-17:fut_cost:h30m",
+   false,
+   480,
+   -14439.1,
+   44303.21,
+   -58742.31
+  ],
+  [
+   "v0_2026-10:vol:h30m",
+   false,
+   724,
+   -18215.28,
+   64282.73,
+   -82498.01
+  ],
+  [
+   "r2026-09-17:vol:h10m",
+   false,
+   710,
+   -19559.36,
+   64043.18,
+   -83602.54
+  ],
+  [
+   "v0_2026-10:vol:h15m",
+   false,
+   748,
+   -22994.16,
+   65631.36,
+   -88625.52
+  ],
+  [
+   "r2026-09-17:fut_cost:h15m",
+   false,
+   296,
+   -60029.17,
+   30341.04,
+   -90370.21
+  ],
+  [
+   "r2026-09-17:vol:h15m",
+   false,
+   666,
+   -30202.64,
+   60959.42,
+   -91162.06
+  ],
+  [
+   "r2026-09-17:vol:h30m",
+   false,
+   664,
+   -33737.87,
+   58918.07,
+   -92655.94
+  ],
+  [
+   "v0_2026-10:vol:h20m",
+   false,
+   731,
+   -46035.07,
+   64648.71,
+   -110683.78
+  ],
+  [
+   "r2026-09-17:vol:h20m",
+   false,
+   797,
+   -48362.35,
+   71701.49,
+   -120063.84
+  ],
+  [
+   "r2026-09-17:fut_cost:h20m",
+   false,
+   457,
+   -76881.05,
+   43186.86,
+   -120067.91
+  ]
+ ],
+ "p5_resume": {
+  "Trades": 112,
+  "Net P&L": -11329.98,
+  "Costs": 9528.63,
+  "Win Rate": 0.3125,
+  "Cumulative Net P&L": -11329.98,
+  "Max Drawdown": -14984.96,
+  "Net P&L FYTD": -11329.98
+ },
+ "p5_all_maxdd": -1151766.22,
+ "p5_dates": [
+  [
+   "2026-05-05",
+   "2026-09-17"
+  ]
+ ],
+ "users": [
+  [
+   "banknifty.head@example.com",
+   2
+  ],
+  [
+   "nifty.head@example.com",
+   1
+  ],
+  [
+   "risk.reviewer@example.com",
+   1
+  ],
+  [
+   "risk.reviewer@example.com",
+   2
+  ]
+ ]
+}

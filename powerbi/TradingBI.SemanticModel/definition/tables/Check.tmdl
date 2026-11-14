@@ -1,0 +1,55 @@
+table Check
+	lineageTag: a62aab16-cfde-5119-bf17-cfcc03ffc9d9
+
+	column CheckKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f1d1ca0c-0d09-5ea6-8779-8073633702c2
+		summarizeBy: none
+		sourceColumn: CheckKey
+
+	column Check
+		dataType: string
+		lineageTag: ff84296c-8439-534c-b747-4841d10f16e8
+		summarizeBy: none
+		sourceColumn: Check
+
+	column 'Check Category'
+		dataType: string
+		lineageTag: 06c4b7f8-eb22-53d1-813f-3ba6a4eac5e4
+		summarizeBy: none
+		sourceColumn: Check Category
+
+	column 'Minute Level'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 70f9de27-59a2-5ca0-9cac-44e5791a5be9
+		summarizeBy: none
+		sourceColumn: Minute Level
+
+	column Cross-Dataset
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b39cf6bd-7dea-5a0a-b65c-d88ebc409ee7
+		summarizeBy: none
+		sourceColumn: Cross-Dataset
+
+	column 'Check Description'
+		dataType: string
+		lineageTag: dea6d968-abbe-52ca-9321-fab805c72ac3
+		summarizeBy: none
+		sourceColumn: Check Description
+
+	partition Check = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="Check"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"CheckKey", Int64.Type}, {"Check", type text}, {"Check Category", type text}, {"Minute Level", type logical}, {"Cross-Dataset", type logical}, {"Check Description", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

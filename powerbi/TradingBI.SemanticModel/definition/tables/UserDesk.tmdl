@@ -1,0 +1,30 @@
+table UserDesk
+	isHidden
+	lineageTag: 6cb02564-47c3-5e05-b5f5-01b006a9e512
+
+	column User
+		dataType: string
+		lineageTag: eb4e92f5-0d1d-53dc-ab96-5ddb17d587a9
+		summarizeBy: none
+		sourceColumn: User
+
+	column InstrumentKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 5af79bb6-83f8-5ece-92b0-4803e87ee743
+		summarizeBy: none
+		sourceColumn: InstrumentKey
+
+	partition UserDesk = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="UserDesk"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"User", type text}, {"InstrumentKey", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,44 @@
+table FeatureImportance
+	lineageTag: 1a6c9375-88cb-57fb-84a2-531ded735a84
+
+	column ModelRunKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4a8e0ba8-1efc-5f64-bfd8-e15a1cf7b02c
+		summarizeBy: none
+		sourceColumn: ModelRunKey
+
+	column FeatureKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8ab3ccba-bb5d-5e4b-beb1-0f55c7f4f750
+		summarizeBy: none
+		sourceColumn: FeatureKey
+
+	column Rank
+		dataType: int64
+		formatString: 0
+		lineageTag: f237d05e-e8b1-5fdf-a3e8-6c8ebaa4f75a
+		summarizeBy: none
+		sourceColumn: Rank
+
+	column Importance
+		dataType: double
+		lineageTag: 7ce7b885-3360-50ce-a768-ca41fc0d1f3e
+		summarizeBy: sum
+		sourceColumn: Importance
+
+	partition FeatureImportance = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="FeatureImportance"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"ModelRunKey", Int64.Type}, {"FeatureKey", Int64.Type}, {"Rank", Int64.Type}, {"Importance", type number}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,47 @@
+table Feature
+	lineageTag: 2ffc201a-7175-5d61-8ae1-64503f18e0ec
+
+	column FeatureKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0f7b49e8-fefe-53fa-83b2-e9e2a69e3be0
+		summarizeBy: none
+		sourceColumn: FeatureKey
+
+	column Feature
+		dataType: string
+		lineageTag: 1aa52244-6c2f-5864-a34e-a42e72ec8819
+		summarizeBy: none
+		sourceColumn: Feature
+
+	column 'Feature Group'
+		dataType: string
+		lineageTag: ac70d535-688c-5e58-a08c-56fb8299fa54
+		summarizeBy: none
+		sourceColumn: Feature Group
+
+	column Description
+		dataType: string
+		lineageTag: baf507e5-365b-57ca-92ab-ed583de3c34e
+		summarizeBy: none
+		sourceColumn: Description
+
+	column 'Production Status'
+		dataType: string
+		lineageTag: 770c518b-766d-5828-a068-018d3dadb9d3
+		summarizeBy: none
+		sourceColumn: Production Status
+
+	partition Feature = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="Feature"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"FeatureKey", Int64.Type}, {"Feature", type text}, {"Feature Group", type text}, {"Description", type text}, {"Production Status", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

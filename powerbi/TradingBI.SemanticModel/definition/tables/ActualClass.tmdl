@@ -1,0 +1,44 @@
+table ActualClass
+	lineageTag: 135bb224-21dd-5ee7-9417-99c4443f8189
+
+	column ActualClassKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e0a6b2c0-8f6c-5ea3-9fcc-38cb00358aff
+		summarizeBy: none
+		sourceColumn: ActualClassKey
+
+	column 'Actual Class'
+		dataType: string
+		lineageTag: ff5d5091-9b8f-5cf0-b9cd-97ff31283716
+		summarizeBy: none
+		sourceColumn: Actual Class
+		sortByColumn: 'Actual Class Order'
+
+	column 'Actual Class Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f333ae5-7d6b-531a-9cb2-7817fac4bec1
+		summarizeBy: none
+		sourceColumn: Actual Class Order
+
+	column 'Actual Is Directional'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: dcd7d373-095e-5cac-ae83-19ab8ad1fbe4
+		summarizeBy: none
+		sourceColumn: Actual Is Directional
+
+	partition ActualClass = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="ActualClass"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"ActualClassKey", Int64.Type}, {"Actual Class", type text}, {"Actual Class Order", Int64.Type}, {"Actual Is Directional", type logical}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

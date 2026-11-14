@@ -1,0 +1,149 @@
+table DQFinding
+	lineageTag: cf3078f2-18ad-51c9-ba63-ecaa440bd0e3
+
+	column FindingId
+		dataType: int64
+		formatString: 0
+		lineageTag: cf7e5cf7-b6cb-5f38-b4ec-6a8366906c84
+		summarizeBy: none
+		sourceColumn: FindingId
+
+	column DateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 3e94183b-4959-5591-9881-934b1e556069
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column DatasetKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4b2f53d6-1645-5161-86c3-4049bf015839
+		summarizeBy: none
+		sourceColumn: DatasetKey
+
+	column CheckKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 26d9508a-98d8-5b50-ac25-b98c8124c8a7
+		summarizeBy: none
+		sourceColumn: CheckKey
+
+	column SeverityKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 56be0954-522a-57ab-abf0-0707c84b4ecd
+		summarizeBy: none
+		sourceColumn: SeverityKey
+
+	column GateClassKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e9aaf074-aa38-582f-bdc4-e5a555961833
+		summarizeBy: none
+		sourceColumn: GateClassKey
+
+	column 'DQ Run'
+		dataType: string
+		lineageTag: 4ddd3343-0cfa-5e34-af30-84726b0a713b
+		summarizeBy: none
+		sourceColumn: DQ Run
+
+	column 'Run Created (UTC)'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2644b927-0580-5269-8682-d916382f46d6
+		summarizeBy: none
+		sourceColumn: Run Created (UTC)
+
+	column 'Is Resolved Run'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 83b3f576-2de5-53d8-b3f4-f5bd4bc916b7
+		summarizeBy: none
+		sourceColumn: Is Resolved Run
+
+	column Column
+		dataType: string
+		lineageTag: 0c89ff31-bf74-51c4-bb49-56d05eb88a5f
+		summarizeBy: none
+		sourceColumn: Column
+
+	column Symbol
+		dataType: string
+		lineageTag: 398c4ecd-dede-5244-85f8-3765887a22c7
+		summarizeBy: none
+		sourceColumn: Symbol
+
+	column 'Minute From'
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: cf9da647-f417-5086-b4b9-aa5c411beeba
+		summarizeBy: none
+		sourceColumn: Minute From
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column 'Minute To'
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: 9f99054d-badc-5aab-a03f-b6fd579cbc95
+		summarizeBy: none
+		sourceColumn: Minute To
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column Value
+		dataType: string
+		lineageTag: 870d2487-b796-5137-af85-edd6c11eac6b
+		summarizeBy: none
+		sourceColumn: Value
+
+	column 'Value (number)'
+		dataType: double
+		lineageTag: ebf2edc6-0ba9-538d-aa33-45721d04a442
+		summarizeBy: sum
+		sourceColumn: Value (number)
+
+	column Threshold
+		dataType: string
+		lineageTag: 9886fdd2-291b-5aeb-9ddc-4070bd905020
+		summarizeBy: none
+		sourceColumn: Threshold
+
+	column 'Known Cause'
+		dataType: string
+		lineageTag: a7bb55f8-6298-5b07-a381-b95f838906f4
+		summarizeBy: none
+		sourceColumn: Known Cause
+
+	column Detail
+		dataType: string
+		lineageTag: be253dfc-d8c7-59c3-b45d-1f972f9033e0
+		summarizeBy: none
+		sourceColumn: Detail
+
+	column 'Has Known Cause'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 0357f582-cfc9-552d-891d-32e4f2eeb5a7
+		summarizeBy: none
+		sourceColumn: Has Known Cause
+
+	partition DQFinding = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="DQFinding"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"FindingId", Int64.Type}, {"DateKey", Int64.Type}, {"DatasetKey", Int64.Type}, {"CheckKey", Int64.Type}, {"SeverityKey", Int64.Type}, {"GateClassKey", Int64.Type}, {"DQ Run", type text}, {"Run Created (UTC)", type datetime}, {"Is Resolved Run", type logical}, {"Column", type text}, {"Symbol", type text}, {"Minute From", type time}, {"Minute To", type time}, {"Value", type text}, {"Value (number)", type number}, {"Threshold", type text}, {"Known Cause", type text}, {"Detail", type text}, {"Has Known Cause", type logical}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

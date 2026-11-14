@@ -1,0 +1,56 @@
+table DQDayVerdict
+	lineageTag: fcf2acda-811b-5cfb-b75c-60aa2bb22d0d
+
+	column DateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 00ee89a6-b853-5789-bf0a-99c3d645b035
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column Verdict
+		dataType: string
+		lineageTag: fabe62c8-54d7-5d94-90f9-40af96ecfe4d
+		summarizeBy: none
+		sourceColumn: Verdict
+
+	column 'Exclude Reasons'
+		dataType: int64
+		formatString: 0
+		lineageTag: d28a9282-6ab5-520d-b96e-1bc7b4c3dcf7
+		summarizeBy: sum
+		sourceColumn: Exclude Reasons
+
+	column 'Masked Ranges'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4e006f8b-53b8-54af-b878-27fd62337e29
+		summarizeBy: sum
+		sourceColumn: Masked Ranges
+
+	column 'Accepted FAILs'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3e093066-18f6-5b30-a2f4-cc1a7f246352
+		summarizeBy: sum
+		sourceColumn: Accepted FAILs
+
+	column Reasons
+		dataType: string
+		lineageTag: d4cd7a49-a224-51b7-b692-46d6a7215546
+		summarizeBy: none
+		sourceColumn: Reasons
+
+	partition DQDayVerdict = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="DQDayVerdict"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"DateKey", Int64.Type}, {"Verdict", type text}, {"Exclude Reasons", Int64.Type}, {"Masked Ranges", Int64.Type}, {"Accepted FAILs", Int64.Type}, {"Reasons", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

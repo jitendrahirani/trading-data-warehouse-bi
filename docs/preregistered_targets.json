@@ -1,0 +1,287 @@
+{
+ "generated_utc": "2026-11-10 15:35 UTC",
+ "git_commit_at_generation": "9f8bfc7",
+ "rule": "Pre-registered BEFORE any load. The warehouse must reproduce every number below exactly (or within the stated tolerance).",
+ "FactDQFinding": {
+  "rows": 28180,
+  "runs": 27,
+  "rows_by_run": {
+   "20261003b-history": 21444,
+   "20261004T092935Z-manual": 188,
+   "20261005T102939Z-postmarket": 184,
+   "20261006T103031Z-postmarket": 186,
+   "20261007T103044Z-postmarket": 181,
+   "20261008T103049Z-postmarket": 197,
+   "20261009T103002Z-postmarket": 202,
+   "20261012T103010Z-postmarket": 285,
+   "20261013T103025Z-postmarket": 275,
+   "20261014T103021Z-postmarket": 277,
+   "20261015T103026Z-postmarket": 277,
+   "20261016T102953Z-postmarket": 283,
+   "20261019T103022Z-postmarket": 284,
+   "20261021T103019Z-postmarket": 280,
+   "20261022T103025Z-postmarket": 282,
+   "20261023T103009Z-postmarket": 282,
+   "20261026T103044Z-postmarket": 278,
+   "20261027T103027Z-postmarket": 289,
+   "20261028T103129Z-postmarket": 280,
+   "20261029T103046Z-postmarket": 276,
+   "20261030T103339Z-postmarket": 284,
+   "20261102T103106Z-postmarket": 283,
+   "20261103T103101Z-postmarket": 283,
+   "20261104T103038Z-postmarket": 280,
+   "20261105T103008Z-postmarket": 280,
+   "20261106T103059Z-postmarket": 276,
+   "20261109T103045Z-postmarket": 264
+  },
+  "rows_by_severity": {
+   "pass": 24194,
+   "note": 3002,
+   "warn": 905,
+   "fail": 79
+  },
+  "datasets": 32,
+  "checks": 28
+ },
+ "FactDQDailyStatus": {
+  "date_dataset_pairs": 3706,
+  "dates": 141,
+  "resolved_findings_rows": 27511,
+  "resolved_rows_by_severity": {
+   "pass": 23681,
+   "note": 2856,
+   "warn": 895,
+   "fail": 79
+  },
+  "day_verdicts": {
+   "unchecked": 1,
+   "ok": 131,
+   "exclude": 9
+  },
+  "excluded_dates": [
+   "2026-04-29",
+   "2026-04-30",
+   "2026-05-04",
+   "2026-05-29",
+   "2026-06-02",
+   "2026-06-24",
+   "2026-07-14",
+   "2026-08-26",
+   "2026-08-31"
+  ],
+  "unchecked_dates": [
+   "2026-04-17"
+  ],
+  "fail_rows_by_gate_class": {
+   "excluded by decision": 25,
+   "unresolved: day excluded": 18,
+   "not consumed by the model": 15,
+   "unresolved: minutes masked": 11,
+   "by design now": 10
+  },
+  "minute_masks": 11,
+  "rule": "production gate (ml_pipeline/dq/gate.py) via bi/etl/dq_rules.py"
+ },
+ "FactModelPrediction": {
+  "rows_by_horizon": {
+   "5": 68523,
+   "10": 67583,
+   "15": 66643,
+   "20": 65703,
+   "30": 63823
+  },
+  "rows_total": 332275,
+  "accuracy_by_horizon": {
+   "5": 0.4665,
+   "10": 0.4623,
+   "15": 0.4609,
+   "20": 0.453,
+   "30": 0.449
+  },
+  "tolerance": 0.0005
+ },
+ "FactConfusion (DAX check)": {
+  "5": [
+   3602,
+   13012,
+   1697,
+   3730,
+   25265,
+   3554,
+   1735,
+   12829,
+   3099
+  ],
+  "10": [
+   2908,
+   12569,
+   1938,
+   4128,
+   25615,
+   3711,
+   2032,
+   11963,
+   2719
+  ],
+  "15": [
+   2869,
+   11923,
+   2086,
+   4408,
+   25084,
+   4126,
+   2009,
+   11377,
+   2761
+  ],
+  "20": [
+   2714,
+   11242,
+   2649,
+   4435,
+   24166,
+   4816,
+   1921,
+   10876,
+   2884
+  ],
+  "30": [
+   2956,
+   10513,
+   2379,
+   5563,
+   23104,
+   4405,
+   2248,
+   10056,
+   2599
+  ]
+ },
+ "FactFeatureImportance": {
+  "rows": 75
+ },
+ "FactTrade": {
+  "rows": 8133,
+  "files": 20,
+  "by_scenario": {
+   "production v0_2026-10 | vol | h5m": {
+    "trades": 133,
+    "opt_net_rs": -18150.12,
+    "costs_rs": 11544.8
+   },
+   "production v0_2026-10 | vol | h10m": {
+    "trades": 112,
+    "opt_net_rs": -11329.98,
+    "costs_rs": 9528.63
+   },
+   "production v0_2026-10 | vol | h15m": {
+    "trades": 748,
+    "opt_net_rs": -88625.52,
+    "costs_rs": 65631.36
+   },
+   "production v0_2026-10 | vol | h20m": {
+    "trades": 731,
+    "opt_net_rs": -110683.78,
+    "costs_rs": 64648.71
+   },
+   "production v0_2026-10 | vol | h30m": {
+    "trades": 724,
+    "opt_net_rs": -82498.01,
+    "costs_rs": 64282.73
+   },
+   "research 2026-09-17 | vol | h5m": {
+    "trades": 131,
+    "opt_net_rs": -22794.22,
+    "costs_rs": 12224.93
+   },
+   "research 2026-09-17 | vol | h10m": {
+    "trades": 710,
+    "opt_net_rs": -83602.54,
+    "costs_rs": 64043.18
+   },
+   "research 2026-09-17 | vol | h15m": {
+    "trades": 666,
+    "opt_net_rs": -91162.06,
+    "costs_rs": 60959.42
+   },
+   "research 2026-09-17 | vol | h20m": {
+    "trades": 797,
+    "opt_net_rs": -120063.84,
+    "costs_rs": 71701.49
+   },
+   "research 2026-09-17 | vol | h30m": {
+    "trades": 664,
+    "opt_net_rs": -92655.94,
+    "costs_rs": 58918.07
+   },
+   "research 2026-09-17 | fut_cost | h5m": {
+    "trades": 145,
+    "opt_net_rs": -32632.4,
+    "costs_rs": 16311.15
+   },
+   "research 2026-09-17 | fut_cost | h10m": {
+    "trades": 119,
+    "opt_net_rs": -26533.94,
+    "costs_rs": 13342.08
+   },
+   "research 2026-09-17 | fut_cost | h15m": {
+    "trades": 296,
+    "opt_net_rs": -90370.21,
+    "costs_rs": 30341.04
+   },
+   "research 2026-09-17 | fut_cost | h20m": {
+    "trades": 457,
+    "opt_net_rs": -120067.91,
+    "costs_rs": 43186.86
+   },
+   "research 2026-09-17 | fut_cost | h30m": {
+    "trades": 480,
+    "opt_net_rs": -58742.31,
+    "costs_rs": 44303.21
+   },
+   "research 2026-09-17 | opt_pnl | h5m": {
+    "trades": 123,
+    "opt_net_rs": -4180.79,
+    "costs_rs": 10668.13
+   },
+   "research 2026-09-17 | opt_pnl | h10m": {
+    "trades": 248,
+    "opt_net_rs": -21029.74,
+    "costs_rs": 24575.75
+   },
+   "research 2026-09-17 | opt_pnl | h15m": {
+    "trades": 139,
+    "opt_net_rs": -36320.36,
+    "costs_rs": 14073.57
+   },
+   "research 2026-09-17 | opt_pnl | h20m": {
+    "trades": 346,
+    "opt_net_rs": -38781.71,
+    "costs_rs": 33645.97
+   },
+   "research 2026-09-17 | opt_pnl | h30m": {
+    "trades": 364,
+    "opt_net_rs": 23432.08,
+    "costs_rs": 33168.27
+   }
+  }
+ },
+ "FactFeatureDrift": {
+  "rows": 139,
+  "reports": 4
+ },
+ "FactFeatureValue": {
+  "panel_rows": 71343,
+  "features": 124,
+  "cells": 8846532,
+  "non_null_rows_to_load": 8749765,
+  "load_rule": "unpivot the 124 feature columns; load non-null values only"
+ },
+ "DimFeature": {
+  "rows": 124
+ },
+ "DimDate": {
+  "first_date": "2026-04-17",
+  "last_date": "2026-11-09"
+ }
+}

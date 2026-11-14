@@ -1,0 +1,337 @@
+table _Measures
+	lineageTag: 4a5ff3cb-0783-5a40-a324-f132e0d2b26f
+
+	/// DQ findings in the resolved (latest) runs. (K02)
+	measure 'Checks Evaluated' = SUM ( DQDailyStatus[Checks Evaluated] )
+		formatString: #,0
+		displayFolder: 1 Data quality
+		lineageTag: 9925e1bb-66f3-5c28-9f87-024a67d47808
+
+	/// Findings with severity pass or note in the resolved runs. (K03)
+	measure 'Pass + Note' = SUM ( DQDailyStatus[Pass] ) + SUM ( DQDailyStatus[Note] )
+		formatString: #,0
+		displayFolder: 1 Data quality
+		lineageTag: 711d1db6-ff30-5ca2-8525-cbcf08a4e224
+
+	/// (Pass + note) / checks evaluated. Green >= 95 %, red < 94 % (set from the real distribution). (K03)
+	measure 'DQ Pass Rate' = DIVIDE ( [Pass + Note], [Checks Evaluated] )
+		formatString: 0.0%
+		displayFolder: 1 Data quality
+		lineageTag: f09f2997-5473-5456-803e-a3a601073bb6
+
+	/// Findings with severity fail in the resolved runs.
+	measure FAILs = COALESCE ( SUM ( DQDailyStatus[Fail] ), 0 )
+		formatString: #,0
+		displayFolder: 1 Data quality
+		lineageTag: 8b6c6cc8-99a9-59c3-81d4-17485a03f7d7
+
+	/// FAILs in consumed datasets with no by-design rule and no written decision (day-level + minute-level). (K04)
+	measure 'Unresolved FAILs' = COALESCE ( SUM ( DQDailyStatus[Unresolved Day FAILs] ) + SUM ( DQDailyStatus[Unresolved Minute FAILs] ), 0 )
+		formatString: #,0
+		displayFolder: 1 Data quality
+		lineageTag: a35e4ef6-1aff-568b-a35e-bdd8befd31de
+
+	/// Findings with severity warn or fail in the resolved runs.
+	measure 'Warn + Fail Findings' = CALCULATE ( COUNTROWS ( DQFinding ), DQFinding[Is Resolved Run] = TRUE (), Severity[Is Problem] = TRUE () )
+		formatString: #,0
+		displayFolder: 1 Data quality
+		lineageTag: ab5d3593-131c-56e1-b797-f74c7fe2cf5c
+
+	/// Warn/fail findings that carry a known cause (context only: a known cause does not resolve a FAIL). (K05)
+	measure 'Known-Cause FAILs and WARNs' = COALESCE ( CALCULATE ( COUNTROWS ( DQFinding ), DQFinding[Is Resolved Run] = TRUE (), DQFinding[Has Known Cause] = TRUE (), Severity[Is Problem] = TRUE () ), 0 )
+		formatString: #,0
+		displayFolder: 1 Data quality
+		lineageTag: b8e1db14-0a7f-58f2-a766-a205724401bd
+
+	/// FAILs of the cross-source reconciliation checks X1-X8 in the resolved runs. (K08)
+	measure 'Cross-Source FAILs' = COALESCE ( CALCULATE ( COUNTROWS ( DQFinding ), DQFinding[Is Resolved Run] = TRUE (), 'Check'[Cross-Dataset] = TRUE (), Severity[Severity] = "Fail" ), 0 )
+		formatString: #,0
+		displayFolder: 1 Data quality
+		lineageTag: 018c7bce-774e-548b-a7f8-c90a7b120fe3
+
+	/// Dataset(s) with the most warn + fail findings in the current filter (ties listed).
+	measure 'Worst Dataset' =
+			-- 'Dataset' must be quoted: DATASET is a reserved word in current DAX
+			VAR t = TOPN ( 1, VALUES ( 'Dataset'[Dataset] ), [Warn + Fail Findings], DESC )
+			RETURN CONCATENATEX ( t, 'Dataset'[Dataset], ", ", 'Dataset'[Dataset], ASC )
+		displayFolder: 1 Data quality
+		lineageTag: 2d79f260-1ab8-53cc-9f6b-40bc8be11a77
+
+	/// Dates the production gate excluded. (K01)
+	measure 'Excluded Days' = COALESCE ( CALCULATE ( COUNTROWS ( DQDayVerdict ), DQDayVerdict[Verdict] = "exclude" ), 0 )
+		formatString: #,0
+		displayFolder: 1 Data quality
+		lineageTag: de562ccc-9335-50e5-9cba-fe91fd278fc8
+
+	/// The gate's verdict for the selected date (ok / exclude / unchecked). (K01)
+	measure 'Day Verdict' = SELECTEDVALUE ( DQDayVerdict[Verdict], "select one date" )
+		displayFolder: 1 Data quality
+		lineageTag: b5651dfb-3493-552d-9b8e-11850701acf2
+
+	/// Unresolved FAILs / checks over the 20 trading days up to the selected date. (K06)
+	measure 'Rolling 20-Day Fail Rate' =
+			VAR cur = MAX ( 'Date'[Trading Day No] )
+			VAR win = CALCULATETABLE ( VALUES ( 'Date'[DateKey] ), REMOVEFILTERS ( 'Date' ),
+			    'Date'[Trading Day No] > cur - 20, 'Date'[Trading Day No] <= cur )
+			-- REMOVEFILTERS again: otherwise the outer filter on the selected date would intersect with the window
+			RETURN DIVIDE ( CALCULATE ( [Unresolved FAILs], REMOVEFILTERS ( 'Date' ), win ),
+			    CALCULATE ( [Checks Evaluated], REMOVEFILTERS ( 'Date' ), win ) )
+		formatString: 0.000%
+		displayFolder: 1 Data quality
+		lineageTag: f71e796e-b0f5-5993-b105-17ce34537491
+
+	/// Trading days since the latest date (up to the selected one) with an unresolved FAIL. (K07)
+	measure 'Days Since Unresolved FAIL' =
+			VAR cur = MAX ( 'Date'[Trading Day No] )
+			-- the per-day count is computed INSIDE CALCULATETABLE, where the date filters are removed
+			VAR days = CALCULATETABLE ( ADDCOLUMNS ( VALUES ( 'Date'[Trading Day No] ), "@u", [Unresolved FAILs] ),
+			    REMOVEFILTERS ( 'Date' ), 'Date'[Trading Day No] <= cur )
+			VAR lastDay = MAXX ( FILTER ( days, [@u] > 0 ), 'Date'[Trading Day No] )
+			RETURN IF ( NOT ISBLANK ( lastDay ), cur - lastDay )
+		formatString: #,0
+		displayFolder: 1 Data quality
+		lineageTag: 54a2d6ac-45ed-550d-9224-ef72b23031d6
+
+	/// ETL runs in the selection.
+	measure 'ETL Runs' = COUNTROWS ( EtlRun )
+		formatString: #,0
+		displayFolder: 2 Pipeline
+		lineageTag: da023d4e-536f-51ef-8321-dba05f940d53
+
+	/// ETL runs that ended Failed.
+	measure 'Failed ETL Runs' = COALESCE ( CALCULATE ( COUNTROWS ( EtlRun ), EtlRun[Status] = "Failed" ), 0 )
+		formatString: #,0
+		displayFolder: 2 Pipeline
+		lineageTag: 9de8253e-d266-5188-81d5-5a4ffc700f0e
+
+	/// End time of the newest successful ETL run. (K10)
+	measure 'Last Successful Load' = CALCULATE ( MAX ( EtlRun[Ended] ), EtlRun[Status] = "Succeeded" )
+		formatString: yyyy-mm-dd hh:nn
+		displayFolder: 2 Pipeline
+		lineageTag: 9bb09bd3-5cfb-5684-b770-f4535a7c9c8d
+
+	/// Average ETL run duration in seconds. (K11)
+	measure 'Avg Run Duration (s)' = AVERAGE ( EtlRun[Duration (s)] )
+		formatString: #,0.0
+		displayFolder: 2 Pipeline
+		lineageTag: 93456e0a-ca09-5d84-abcd-0b8e7202ddf9
+
+	/// Reconciliation checks with status BREAK. (K09)
+	measure 'ETL Reconciliation Breaks' = COALESCE ( CALCULATE ( COUNTROWS ( Reconciliation ), Reconciliation[Status] = "BREAK" ), 0 )
+		formatString: #,0
+		displayFolder: 2 Pipeline
+		lineageTag: d909651c-9a51-529f-9ac0-40189cec1cba
+
+	/// Source rows the ETL rejected (etl.RejectRow).
+	measure 'Rows Rejected' = COALESCE ( SUM ( EtlStep[Rows Rejected] ), 0 )
+		formatString: #,0
+		displayFolder: 2 Pipeline
+		lineageTag: a12114bd-d5eb-57bf-8ea9-a7738c63f019
+
+	/// Out-of-fold predictions. (K14)
+	measure Predictions = COUNTROWS ( ModelPrediction )
+		formatString: #,0
+		displayFolder: 3 Model
+		lineageTag: d87a13b1-72db-5b63-b9c9-6a5fa344b650
+
+	/// Predictions whose class equals the actual class.
+	measure 'Correct Predictions' = CALCULATE ( [Predictions], ModelPrediction[Is Correct] = TRUE () )
+		formatString: #,0
+		displayFolder: 3 Model
+		lineageTag: a5395a8a-ff64-5581-af83-5be17334118d
+
+	/// Correct / all. On a row of Actual Class it is that class's recall; on Predicted Class, its precision. (K12)
+	measure Accuracy = DIVIDE ( [Correct Predictions], [Predictions] )
+		formatString: 0.0000
+		displayFolder: 3 Model
+		lineageTag: c0826b90-5b5d-5650-8d0e-5eddd559e2fd
+
+	/// Average recall over the three classes. (K13)
+	measure 'Balanced Accuracy' = AVERAGEX ( FILTER ( VALUES ( ActualClass[ActualClassKey] ), ActualClass[ActualClassKey] >= 0 && [Predictions] > 0 ), [Accuracy] )
+		formatString: 0.0000
+		displayFolder: 3 Model
+		lineageTag: d80fbee5-459d-5f1c-a5af-98ff23ce83bd
+
+	/// Average F1 over the three classes (a class never predicted counts as 0). (K13)
+	measure 'Macro F1' =
+			AVERAGEX (
+			    FILTER ( VALUES ( ActualClass[ActualClassKey] ), ActualClass[ActualClassKey] >= 0 ),
+			    VAR k = ActualClass[ActualClassKey]
+			    VAR tp = CALCULATE ( [Predictions], REMOVEFILTERS ( ActualClass ), REMOVEFILTERS ( PredictedClass ), ModelPrediction[ActualClassKey] = k, ModelPrediction[PredictedClassKey] = k )
+			    VAR act = CALCULATE ( [Predictions], REMOVEFILTERS ( ActualClass ), REMOVEFILTERS ( PredictedClass ), ModelPrediction[ActualClassKey] = k )
+			    VAR prd = CALCULATE ( [Predictions], REMOVEFILTERS ( ActualClass ), REMOVEFILTERS ( PredictedClass ), ModelPrediction[PredictedClassKey] = k )
+			    VAR pr = DIVIDE ( tp, prd, 0 )
+			    VAR rc = DIVIDE ( tp, act, 0 )
+			    RETURN DIVIDE ( 2 * pr * rc, pr + rc, 0 )
+			)
+		formatString: 0.0000
+		displayFolder: 3 Model
+		lineageTag: d1fef0ae-1454-5525-87dd-54189cc684c7
+
+	/// Among predictions of Up or Down: share correct. (K15)
+	measure 'Directional Precision' =
+			DIVIDE ( CALCULATE ( [Correct Predictions], PredictedClass[Predicted Is Directional] = TRUE () ),
+			        CALCULATE ( [Predictions], PredictedClass[Predicted Is Directional] = TRUE () ) )
+		formatString: 0.0000
+		displayFolder: 3 Model
+		lineageTag: 82638e79-2a5a-5624-a2b9-a6423e9824bd
+
+	/// Share of predictions that are Up or Down (a trade would be placed). (K15)
+	measure 'Committed %' = DIVIDE ( CALCULATE ( [Predictions], PredictedClass[Predicted Is Directional] = TRUE () ), [Predictions] )
+		formatString: 0.0%
+		displayFolder: 3 Model
+		lineageTag: 74938d8a-999c-556b-85d0-18424ceeb37f
+
+	/// Directional precision among predictions with max probability >= the Threshold slicer. (K15)
+	measure 'Precision at Threshold' =
+			VAR t = [Threshold Value]
+			RETURN DIVIDE (
+			    CALCULATE ( [Correct Predictions], PredictedClass[Predicted Is Directional] = TRUE (), ModelPrediction[Max Prob] >= t ),
+			    CALCULATE ( [Predictions], PredictedClass[Predicted Is Directional] = TRUE (), ModelPrediction[Max Prob] >= t ) )
+		formatString: 0.0000
+		displayFolder: 3 Model
+		lineageTag: aac937a1-8c78-5d25-bc70-238931e8a6ef
+
+	/// Share of all predictions that are Up/Down with max probability >= the Threshold slicer. (K15)
+	measure 'Coverage at Threshold' =
+			VAR t = [Threshold Value]
+			RETURN DIVIDE ( CALCULATE ( [Predictions], PredictedClass[Predicted Is Directional] = TRUE (), ModelPrediction[Max Prob] >= t ), [Predictions] )
+		formatString: 0.0%
+		displayFolder: 3 Model
+		lineageTag: 645b8614-8a6d-58a0-a2ba-fac83e7fb059
+
+	/// Accuracy as published in the frozen report (reconciliation target for [Accuracy]). (K12)
+	measure 'Frozen Report Accuracy' = CALCULATE ( SUM ( ModelMetric[Value] ), ModelMetric[Metric] = "accuracy" )
+		formatString: 0.0000
+		displayFolder: 3 Model
+		lineageTag: f5dfcc55-4c2b-5afb-91ad-00677ef31b59
+
+	/// Sum of permutation importance (use per feature, top 15). (K16)
+	measure 'Total Importance' = SUM ( FeatureImportance[Importance] )
+		formatString: 0.0000
+		displayFolder: 3 Model
+		lineageTag: 35da80ee-0a51-5547-9ab5-c3ae6962ba82
+
+	/// Features with PSI > 0.25 in a PSI-reliable or range-skew section of a weekly drift report. (K24)
+	measure 'Drifted Features' = CALCULATE ( DISTINCTCOUNT ( FeatureDrift[FeatureKey] ), FeatureDrift[PSI] > 0.25, FeatureDrift[Section] IN { "psi-reliable", "range-skew" } )
+		formatString: #,0
+		displayFolder: 3 Model
+		lineageTag: 2a187fdf-0089-5149-bf21-8ca5a6ac696a
+
+	/// Simulated trades (by exit date). (K17)
+	measure Trades = COUNTROWS ( Trade )
+		formatString: #,0
+		displayFolder: 4 Trades
+		lineageTag: b2938456-9b90-571c-926c-8cb4d5ec46ad
+
+	/// Option P&L after costs, Rs. (K18)
+	measure 'Net P&L' = SUM ( Trade[Net P&L (Rs)] )
+		formatString: #,0.00
+		displayFolder: 4 Trades
+		lineageTag: 4b725a9b-f7bd-5947-b0c6-68f9fdd19b8d
+
+	/// Option P&L before costs, Rs. (K19)
+	measure 'Gross P&L' = SUM ( Trade[Gross P&L (Rs)] )
+		formatString: #,0.00
+		displayFolder: 4 Trades
+		lineageTag: 9ef801ce-f38b-5078-b77f-dfc732a92b28
+
+	/// Entry + exit costs, Rs. (K19)
+	measure Costs = SUM ( Trade[Total Cost (Rs)] )
+		formatString: #,0.00
+		displayFolder: 4 Trades
+		lineageTag: c1185fd4-bb67-56de-8e63-e56c8e42012c
+
+	/// Costs / trades, Rs. (K19)
+	measure 'Cost per Trade' = DIVIDE ( [Costs], [Trades] )
+		formatString: #,0.00
+		displayFolder: 4 Trades
+		lineageTag: dcbe57a5-deeb-5138-80f4-0e7ae84b5c81
+
+	/// Costs / |gross P&L|: how much of the edge the costs eat. (K19)
+	measure 'Cost % of Gross' = DIVIDE ( [Costs], ABS ( [Gross P&L] ) )
+		formatString: 0.0%
+		displayFolder: 4 Trades
+		lineageTag: 0eaab640-ac8a-5934-b9fa-32aeab5942ea
+
+	/// Trades with net P&L > 0 / trades. (K20)
+	measure 'Win Rate' = DIVIDE ( CALCULATE ( [Trades], Trade[Is Win] = TRUE () ), [Trades] )
+		formatString: 0.0%
+		displayFolder: 4 Trades
+		lineageTag: ddcc9625-eb6a-5b37-9617-2a78eff7b0b6
+
+	/// Net P&L / trades, Rs. (K20)
+	measure 'Avg Net per Trade' = DIVIDE ( [Net P&L], [Trades] )
+		formatString: #,0.00
+		displayFolder: 4 Trades
+		lineageTag: 4517d639-91c9-5ebd-bdab-81da6eb11c29
+
+	/// Trades counted on their ENTRY date: the inactive relationship, switched on with USERELATIONSHIP.
+	measure 'Trades by Entry Date' = CALCULATE ( [Trades], USERELATIONSHIP ( Trade[EntryDateKey], 'Date'[DateKey] ) )
+		formatString: #,0
+		displayFolder: 4 Trades
+		lineageTag: 05cbe25d-c914-56b5-bd6b-c89fce536a58
+
+	/// Net P&L from the first trade up to the selected (or last) date. (K21)
+	measure 'Cumulative Net P&L' =
+			VAR asOfDate = MAX ( 'Date'[Date] )
+			RETURN CALCULATE ( [Net P&L], REMOVEFILTERS ( 'Date' ), 'Date'[Date] <= asOfDate )
+		formatString: #,0.00
+		displayFolder: 4 Trades
+		lineageTag: 217dd24f-546a-5be6-9e93-237e8d7063bc
+
+	/// Month-to-date net P&L. (K23)
+	measure 'Net P&L MTD' = TOTALMTD ( [Net P&L], 'Date'[Date] )
+		formatString: #,0.00
+		displayFolder: 4 Trades
+		lineageTag: c5ca302a-ce6d-5bd8-9a7c-3034721ddb01
+
+	/// Indian fiscal-year-to-date net P&L (year ends 31 March). (K23)
+	measure 'Net P&L FYTD' = TOTALYTD ( [Net P&L], 'Date'[Date], "3/31" )
+		formatString: #,0.00
+		displayFolder: 4 Trades
+		lineageTag: 94824dc6-ebd2-5948-ae12-eae3674fdba2
+
+	/// Cumulative net P&L minus its running peak (equity starts at 0), on the selected date. (K22)
+	measure Drawdown =
+			VAR cur = MAX ( 'Date'[Date] )
+			VAR peak = MAXX ( FILTER ( ALL ( 'Date'[Date] ), 'Date'[Date] <= cur ), [Cumulative Net P&L] )
+			RETURN [Cumulative Net P&L] - MAX ( peak, 0 )
+		formatString: #,0.00
+		displayFolder: 4 Trades
+		lineageTag: dfd37eae-329b-5f10-95f7-47f8c7323d51
+
+	/// Worst drawdown of the daily equity curve up to the selected date. (K22)
+	measure 'Max Drawdown' =
+			VAR asOfDate = MAX ( 'Date'[Date] )
+			VAR days = ADDCOLUMNS ( FILTER ( ALL ( 'Date'[Date] ), 'Date'[Date] <= asOfDate ), "@net", [Net P&L] )
+			VAR curve = ADDCOLUMNS ( days, "@cum", VAR d = 'Date'[Date] RETURN SUMX ( FILTER ( days, 'Date'[Date] <= d ), [@net] ) )
+			VAR peaks = ADDCOLUMNS ( curve, "@peak", VAR d = 'Date'[Date] RETURN MAX ( 0, MAXX ( FILTER ( curve, 'Date'[Date] <= d ), [@cum] ) ) )
+			RETURN MINX ( peaks, [@cum] - [@peak] )
+		formatString: #,0.00
+		displayFolder: 4 Trades
+		lineageTag: af64811e-0370-54a1-abc2-429d6a71def2
+
+	/// Minute-weighted average of the feature value (from the daily summary view).
+	measure 'Feature Daily Average' = DIVIDE ( SUMX ( FeatureValueDaily, FeatureValueDaily[Average] * FeatureValueDaily[Minutes] ), SUM ( FeatureValueDaily[Minutes] ) )
+		formatString: 0.000000
+		displayFolder: 5 Features
+		lineageTag: 303e2f5a-af2b-5773-b648-c96bd50e0501
+
+	column Column1
+		dataType: string
+		isHidden
+		lineageTag: 01d25c1b-2f47-53cb-9f4b-cf07e87c22ce
+		summarizeBy: none
+		sourceColumn: Column1
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				    Source = #table(type table [Column1 = text], {})
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

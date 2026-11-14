@@ -1,0 +1,94 @@
+table ModelPrediction
+	lineageTag: b6dced3d-9597-5183-b01c-0dd54a8fe9a3
+
+	column ModelRunKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 110e447e-c521-518a-8d3e-23f1ece21b15
+		summarizeBy: none
+		sourceColumn: ModelRunKey
+
+	column InstrumentKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: bf835d64-6d9c-5d72-a062-0533e631143b
+		summarizeBy: none
+		sourceColumn: InstrumentKey
+
+	column DateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 30f7b0fe-95d2-5869-9467-dace85ba16e6
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column TimeKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 1bff8fdd-1d68-58de-baa0-c79cbfbb1579
+		summarizeBy: none
+		sourceColumn: TimeKey
+
+	column ActualClassKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 884c6f03-dba6-5232-876a-e4c3befa085b
+		summarizeBy: none
+		sourceColumn: ActualClassKey
+
+	column PredictedClassKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 88450f22-3ebd-5509-a6b6-072c89bf3e00
+		summarizeBy: none
+		sourceColumn: PredictedClassKey
+
+	column 'Prob Down'
+		dataType: double
+		lineageTag: a7752e94-a70a-56b8-9e76-e178156c875b
+		summarizeBy: sum
+		sourceColumn: Prob Down
+
+	column 'Prob Flat'
+		dataType: double
+		lineageTag: 3632791f-5036-575f-8809-42f4a458416b
+		summarizeBy: sum
+		sourceColumn: Prob Flat
+
+	column 'Prob Up'
+		dataType: double
+		lineageTag: 011095c5-3681-5246-bd04-b0c18607b961
+		summarizeBy: sum
+		sourceColumn: Prob Up
+
+	column 'Max Prob'
+		dataType: double
+		lineageTag: 45a0bc13-a4d9-5f56-b320-1217421d4af0
+		summarizeBy: sum
+		sourceColumn: Max Prob
+
+	column 'Is Correct'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: fdab76d5-676f-5b6b-9af8-d8421dee469f
+		summarizeBy: none
+		sourceColumn: Is Correct
+
+	partition ModelPrediction = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="ModelPrediction"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"ModelRunKey", Int64.Type}, {"InstrumentKey", Int64.Type}, {"DateKey", Int64.Type}, {"TimeKey", Int64.Type}, {"ActualClassKey", Int64.Type}, {"PredictedClassKey", Int64.Type}, {"Prob Down", type number}, {"Prob Flat", type number}, {"Prob Up", type number}, {"Max Prob", type number}, {"Is Correct", type logical}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

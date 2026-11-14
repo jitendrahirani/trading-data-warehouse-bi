@@ -1,0 +1,46 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-IN
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["Server","Database","Date","Time","Instrument","Dataset","Check","Severity","GateClass","ModelRun","ActualClass","PredictedClass","Feature","DQFinding","DQDailyStatus","DQDayVerdict","ModelPrediction","ModelMetric","FeatureImportance","Trade","FeatureDrift","FeatureValueDaily","EtlRun","EtlStep","Reconciliation","UserDesk","_Measures"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Date
+ref table Time
+ref table Instrument
+ref table Dataset
+ref table Check
+ref table Severity
+ref table GateClass
+ref table ModelRun
+ref table ActualClass
+ref table PredictedClass
+ref table Feature
+ref table DQFinding
+ref table DQDailyStatus
+ref table DQDayVerdict
+ref table ModelPrediction
+ref table ModelMetric
+ref table FeatureImportance
+ref table Trade
+ref table FeatureDrift
+ref table FeatureValueDaily
+ref table EtlRun
+ref table EtlStep
+ref table Reconciliation
+ref table UserDesk
+ref table _Measures
+ref table Threshold
+
+ref role 'BANKNIFTY desk'
+ref role 'Desk (dynamic)'
+ref role 'NIFTY desk'
+

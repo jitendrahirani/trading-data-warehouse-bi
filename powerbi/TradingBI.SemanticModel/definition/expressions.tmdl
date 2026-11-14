@@ -1,0 +1,10 @@
+expression Server = "localhost,1433" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 6bcc8f5b-d573-5c14-96cb-3a4f0ba7a4ae
+
+	annotation PBI_ResultType = Text
+
+expression Database = "TradingBI_Dev" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 009fc446-ddfa-54aa-81a6-3752a6a0196a
+
+	annotation PBI_ResultType = Text
+

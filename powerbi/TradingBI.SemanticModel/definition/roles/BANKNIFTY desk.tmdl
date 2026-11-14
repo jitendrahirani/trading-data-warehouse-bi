@@ -1,0 +1,7 @@
+role 'BANKNIFTY desk'
+	modelPermission: read
+
+	tablePermission Instrument = [Instrument] = "BANKNIFTY"
+
+	annotation PBI_Id = c026f43aa9174ebc8bc08603a3fe4179
+

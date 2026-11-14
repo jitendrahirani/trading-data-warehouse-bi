@@ -1,0 +1,50 @@
+table Severity
+	lineageTag: 12d1ecb4-2b55-57f3-84ff-b20571295301
+
+	column SeverityKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: de110da6-7dea-5f38-8e7b-4774d4479ef5
+		summarizeBy: none
+		sourceColumn: SeverityKey
+
+	column Severity
+		dataType: string
+		lineageTag: c5cf595c-31b7-5ab8-a885-b1983774a22e
+		summarizeBy: none
+		sourceColumn: Severity
+		sortByColumn: 'Severity Order'
+
+	column 'Severity Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: d26a3fa1-ce9d-578a-a2e9-f4e2e3076299
+		summarizeBy: none
+		sourceColumn: Severity Order
+
+	column 'Is Problem'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c0747e58-da2e-5210-8ec1-398b70a0c526
+		summarizeBy: none
+		sourceColumn: Is Problem
+
+	column Colour
+		dataType: string
+		lineageTag: 962cad96-dfd3-5e03-bbdb-2041c94bbd12
+		summarizeBy: none
+		sourceColumn: Colour
+
+	partition Severity = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="Severity"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"SeverityKey", Int64.Type}, {"Severity", type text}, {"Severity Order", Int64.Type}, {"Is Problem", type logical}, {"Colour", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

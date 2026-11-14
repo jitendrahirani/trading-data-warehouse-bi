@@ -1,0 +1,101 @@
+table DQDailyStatus
+	lineageTag: 3f22728b-9289-5298-9a8f-2d266473af2f
+
+	column DateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 192675a2-cf5d-5ad5-9f9a-0cd42430ca20
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column DatasetKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 03f103cd-dc9d-5665-ac91-fd1b29534bf6
+		summarizeBy: none
+		sourceColumn: DatasetKey
+
+	column 'Resolved Run'
+		dataType: string
+		lineageTag: 14a2c55b-9ad2-57de-973d-d0513d56b99d
+		summarizeBy: none
+		sourceColumn: Resolved Run
+
+	column 'Runs Evaluated'
+		dataType: int64
+		formatString: 0
+		lineageTag: e2961424-da45-5f80-9879-33a0bc96542b
+		summarizeBy: sum
+		sourceColumn: Runs Evaluated
+
+	column 'Checks Evaluated'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8768b2a5-7fed-5ae2-b2f6-5efabbe2a1a4
+		summarizeBy: sum
+		sourceColumn: Checks Evaluated
+
+	column Pass
+		dataType: int64
+		formatString: 0
+		lineageTag: 1c6b21db-2dfe-5082-a14e-575fc423ee5d
+		summarizeBy: sum
+		sourceColumn: Pass
+
+	column Note
+		dataType: int64
+		formatString: 0
+		lineageTag: e1272ebf-d572-51d0-981b-bb89df9476dd
+		summarizeBy: sum
+		sourceColumn: Note
+
+	column Warn
+		dataType: int64
+		formatString: 0
+		lineageTag: a23e5954-2c6b-58a6-9509-5700252f909d
+		summarizeBy: sum
+		sourceColumn: Warn
+
+	column Fail
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f48399b-7257-5b1c-ba30-f4209da3536d
+		summarizeBy: sum
+		sourceColumn: Fail
+
+	column 'Unresolved Day FAILs'
+		dataType: int64
+		formatString: 0
+		lineageTag: 517c8a7c-36ae-5473-9d6b-9d4615afc50c
+		summarizeBy: sum
+		sourceColumn: Unresolved Day FAILs
+
+	column 'Unresolved Minute FAILs'
+		dataType: int64
+		formatString: 0
+		lineageTag: bd19c1a4-4c49-5fdf-b74f-ec64fd13dd6e
+		summarizeBy: sum
+		sourceColumn: Unresolved Minute FAILs
+
+	column WorstSeverityKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: bbed5f09-f608-57bc-936e-f4a8ac1b2d45
+		summarizeBy: none
+		sourceColumn: WorstSeverityKey
+
+	partition DQDailyStatus = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="DQDailyStatus"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"DateKey", Int64.Type}, {"DatasetKey", Int64.Type}, {"Resolved Run", type text}, {"Runs Evaluated", Int64.Type}, {"Checks Evaluated", Int64.Type}, {"Pass", Int64.Type}, {"Note", Int64.Type}, {"Warn", Int64.Type}, {"Fail", Int64.Type}, {"Unresolved Day FAILs", Int64.Type}, {"Unresolved Minute FAILs", Int64.Type}, {"WorstSeverityKey", Int64.Type}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

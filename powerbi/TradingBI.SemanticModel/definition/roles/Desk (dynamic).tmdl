@@ -1,0 +1,7 @@
+role 'Desk (dynamic)'
+	modelPermission: read
+
+	tablePermission Instrument = [InstrumentKey] IN CALCULATETABLE ( VALUES ( UserDesk[InstrumentKey] ), UserDesk[User] = USERPRINCIPALNAME () )
+
+	annotation PBI_Id = f29f630d32df4a6c9ec636fbf89cd74f
+

@@ -1,0 +1,81 @@
+table EtlRun
+	lineageTag: e3640054-93f1-50f4-93f9-25a8750bbc8d
+
+	column EtlRunId
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a811f60-44a5-5d21-bfdb-34f9c1c5e2fe
+		summarizeBy: none
+		sourceColumn: EtlRunId
+
+	column 'Run Type'
+		dataType: string
+		lineageTag: 8f4cc8f6-ec49-55fe-95f9-16520da17363
+		summarizeBy: none
+		sourceColumn: Run Type
+
+	column Started
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: f165906c-b15a-5c20-af73-c3f8a45a083a
+		summarizeBy: none
+		sourceColumn: Started
+
+	column Ended
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3b7f6eb7-121f-5578-bf96-c2f7613a053f
+		summarizeBy: none
+		sourceColumn: Ended
+
+	column DateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4f930993-0ec8-5a6e-88fe-6d76507cbc6b
+		summarizeBy: none
+		sourceColumn: DateKey
+
+	column Status
+		dataType: string
+		lineageTag: b8b34c1d-b5ac-537d-9960-4f246298f053
+		summarizeBy: none
+		sourceColumn: Status
+
+	column 'Triggered By'
+		dataType: string
+		lineageTag: c0f04c1f-d391-526c-ad44-9729664dcbaf
+		summarizeBy: none
+		sourceColumn: Triggered By
+
+	column 'Duration (s)'
+		dataType: int64
+		formatString: 0
+		lineageTag: 95b2375f-8989-54d1-8c50-9fc8f3a117da
+		summarizeBy: sum
+		sourceColumn: Duration (s)
+
+	column 'Git Commit'
+		dataType: string
+		lineageTag: e95bd6b6-0b6b-5269-a508-4c635655d241
+		summarizeBy: none
+		sourceColumn: Git Commit
+
+	column Error
+		dataType: string
+		lineageTag: e74e0eec-0dc7-55c9-b3c6-690d72c269f7
+		summarizeBy: none
+		sourceColumn: Error
+
+	partition EtlRun = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="EtlRun"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"EtlRunId", Int64.Type}, {"Run Type", type text}, {"Started", type datetime}, {"Ended", type datetime}, {"DateKey", Int64.Type}, {"Status", type text}, {"Triggered By", type text}, {"Duration (s)", Int64.Type}, {"Git Commit", type text}, {"Error", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

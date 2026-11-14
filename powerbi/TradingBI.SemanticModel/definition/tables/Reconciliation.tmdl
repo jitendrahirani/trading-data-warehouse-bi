@@ -1,0 +1,78 @@
+table Reconciliation
+	lineageTag: bba7a8b2-7b99-534b-b0db-377d73107252
+
+	column ReconId
+		dataType: int64
+		formatString: 0
+		lineageTag: 4897d53d-2ac1-5791-b6ea-cef5d60bc208
+		summarizeBy: none
+		sourceColumn: ReconId
+
+	column EtlRunId
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 96e5ef43-549b-56c8-8910-4f675f0bd2b4
+		summarizeBy: none
+		sourceColumn: EtlRunId
+
+	column Check
+		dataType: string
+		lineageTag: 4fae2d5e-b075-5c18-93af-f3a4ec1be2a3
+		summarizeBy: none
+		sourceColumn: Check
+
+	column Table
+		dataType: string
+		lineageTag: 3d45b45d-5180-5f8e-a7d6-22f297041032
+		summarizeBy: none
+		sourceColumn: Table
+
+	column Layer
+		dataType: string
+		lineageTag: bcdfae94-137d-5f1c-9991-8d632922541e
+		summarizeBy: none
+		sourceColumn: Layer
+
+	column Expected
+		dataType: double
+		lineageTag: cb042247-4681-573d-97a4-daf296cf1280
+		summarizeBy: sum
+		sourceColumn: Expected
+
+	column Actual
+		dataType: double
+		lineageTag: 1040f312-1796-54be-8a4c-2643c259e5e1
+		summarizeBy: sum
+		sourceColumn: Actual
+
+	column Tolerance
+		dataType: double
+		lineageTag: 6ec817b1-e9b5-5c9c-ab21-4ef5c050af66
+		summarizeBy: sum
+		sourceColumn: Tolerance
+
+	column Status
+		dataType: string
+		lineageTag: 468607b4-b12e-5011-bedb-35cd77ef8033
+		summarizeBy: none
+		sourceColumn: Status
+
+	column Note
+		dataType: string
+		lineageTag: 69e2353e-4efc-52de-b025-1a27dcd7972b
+		summarizeBy: none
+		sourceColumn: Note
+
+	partition Reconciliation = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database(Server, Database),
+				    View = Source{[Schema="rpt",Item="Reconciliation"]}[Data],
+				    Typed = Table.TransformColumnTypes(View, {{"ReconId", Int64.Type}, {"EtlRunId", Int64.Type}, {"Check", type text}, {"Table", type text}, {"Layer", type text}, {"Expected", type number}, {"Actual", type number}, {"Tolerance", type number}, {"Status", type text}, {"Note", type text}})
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+
